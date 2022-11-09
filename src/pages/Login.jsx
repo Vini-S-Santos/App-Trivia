@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { REGISTER_EMAIL, REGISTER_USER } from '../redux/actions';
 import getToken from '../services/fetches';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
 
@@ -33,9 +35,15 @@ export default class Login extends Component {
   };
 
   playButtonHandler = async () => {
-    const { history } = this.props;
+    const { dispatch, history } = this.props;
+    const { nameInput, emailInput } = this.state;
+
+    dispatch(REGISTER_EMAIL(emailInput));
+    dispatch(REGISTER_USER(nameInput));
+
     const tokenGenerator = await getToken();
     localStorage.setItem('token', tokenGenerator);
+
     history.push('/play');
   };
 
@@ -113,3 +121,5 @@ Login.propTypes = {
     push: PropTypes.func,
   }).isRequired,
 };
+
+export default connect()(Login);
