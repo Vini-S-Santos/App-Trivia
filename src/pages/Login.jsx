@@ -39,6 +39,11 @@ export default class Login extends Component {
     history.push('/play');
   };
 
+  goToSettings = () => {
+    const { history } = this.props;
+    history.push('/config');
+  };
+
   render() {
     const {
       nameInput,
@@ -85,6 +90,16 @@ export default class Login extends Component {
           >
             Play
 
+          </button>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.goToSettings }
+          >
+            Configurações
           </button>
         </div>
 

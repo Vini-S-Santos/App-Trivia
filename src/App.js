@@ -1,13 +1,15 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
+import Config from './pages/Config';
 import Login from './pages/Login';
 
 export default function App() {
   return (
-    <>
+    <Switch>
       <Route exact path="/" component={ Login } />
-      <Route path="/teste"> teste 2 </Route>
-    </>
+      {/* <Route path="/play" component={ Play } /> */}
+      <Route path="/config" component={ Config } />
+    </Switch>
   );
 }
