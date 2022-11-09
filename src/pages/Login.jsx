@@ -37,6 +37,7 @@ class Login extends Component {
   playButtonHandler = async () => {
     const { dispatch, history } = this.props;
     const { nameInput, emailInput } = this.state;
+    //
 
     dispatch(REGISTER_EMAIL(emailInput));
     dispatch(REGISTER_USER(nameInput));
