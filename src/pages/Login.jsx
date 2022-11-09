@@ -33,7 +33,13 @@ export default class Login extends Component {
   };
 
   playButtonHandler = async () => {
-    const { history } = this.props;
+    const { dispatch, history } = this.props;
+    const { nameInput, emailInput } = this.state;
+    //
+
+    dispatch(REGISTER_EMAIL(emailInput));
+    dispatch(REGISTER_USER(nameInput));
+
     const tokenGenerator = await getToken();
     localStorage.setItem('token', tokenGenerator);
     history.push('/play');
