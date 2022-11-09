@@ -4,5 +4,4 @@ import user from './userAndEmail';
 
 const rootReducer = combineReducers({ user, score });
 
-
 export default rootReducer;
