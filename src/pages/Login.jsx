@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getToken from '../services/fetches';
 
 export default class Login extends Component {
   constructor() {
@@ -28,6 +30,13 @@ export default class Login extends Component {
       },
       () => this.validateBtn(),
     );
+  };
+
+  playButtonHandler = async () => {
+    const { history } = this.props;
+    const tokenGenerator = await getToken();
+    localStorage.setItem('token', tokenGenerator);
+    history.push('/play');
   };
 
   render() {
@@ -71,7 +80,7 @@ export default class Login extends Component {
           <button
             type="button"
             data-testid="btn-play"
-            // onClick={ }
+            onClick={ this.playButtonHandler }
             disabled={ isDisabled }
           >
             Play
@@ -83,3 +92,7 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.arrayOf().isRequired,
+};
