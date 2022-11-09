@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { REGISTER_EMAIL, REGISTER_USER } from '../redux/actions';
 import getToken from '../services/fetches';
 
-class Login extends Component {
+export default class Login extends Component {
   constructor() {
     super();
 
@@ -44,7 +42,6 @@ class Login extends Component {
 
     const tokenGenerator = await getToken();
     localStorage.setItem('token', tokenGenerator);
-
     history.push('/play');
   };
 
@@ -123,5 +120,3 @@ Login.propTypes = {
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
-
-export default connect()(Login);
