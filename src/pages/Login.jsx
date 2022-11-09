@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { REGISTER_EMAIL, REGISTER_USER } from '../redux/actions';
 import getToken from '../services/fetches';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
 
@@ -32,10 +34,10 @@ export default class Login extends Component {
     );
   };
 
-  playButtonHandler = async () => {
-    const { dispatch, history } = this.props;
+  playButtonHandler = async (evt) => {
+    evt.preventDefault();
+    const { history, dispatch } = this.props;
     const { nameInput, emailInput } = this.state;
-    //
 
     dispatch(REGISTER_EMAIL(emailInput));
     dispatch(REGISTER_USER(nameInput));
@@ -55,6 +57,7 @@ export default class Login extends Component {
       nameInput,
       emailInput,
       isDisabled } = this.state;
+
     return (
       <div>
 
@@ -114,9 +117,16 @@ export default class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+  email: state.user.email,
+});
+
 Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
+
+export default connect(mapStateToProps)(Login);
