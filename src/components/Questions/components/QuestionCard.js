@@ -9,16 +9,6 @@ class QuestionCard extends React.Component {
     API_ER_CODE: 3,
   };
 
-  async componentDidMount() {
-    const token = localStorage.getItem('token');
-    const { API_ER_CODE } = this.state;
-    const res = await getQuestions(token);
-    if (res.response_code === API_ER_CODE) {
-      const { history } = this.props;
-      history.push('/');
-    }
-  }
-
   randomizeAnswers = (answrs) => {
     const newAnswersArr = answrs;
     for (let i = answrs.length - 1; i > 0; i -= 1) {
@@ -46,11 +36,21 @@ class QuestionCard extends React.Component {
     // dispatch(NEXT_QUESTION((page < questionsLength - 1 ? page + 1 : 0))
   };
 
+  verifyToken = async () => {
+    const token = localStorage.getItem('token');
+    const { API_ER_CODE } = this.state;
+    const res = await getQuestions(token);
+    if (res.response_code === API_ER_CODE) {
+      const { history } = this.props;
+      history.push('/');
+    }
+  }
+
   render() {
     const { question } = this.props;
     const answers = [...question.incorrect_answers, question.correct_answer];
     const options = this.randomizeAnswers(answers);
-    console.log(question);
+    this.verifyToken();
     return (
       <>
         <h1>{ question.question }</h1>
