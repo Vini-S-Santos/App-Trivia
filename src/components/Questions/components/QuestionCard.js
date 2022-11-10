@@ -119,7 +119,7 @@ QuestionCard.propTypes = {
   }),
 }.isRequired;
 
-const mapStateToProps = ({ play: { question, page, questions } }) => ({
+const mapStateToProps = ({ player: { question, page, questions } }) => ({
   question,
   page,
   questions,

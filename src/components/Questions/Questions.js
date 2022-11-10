@@ -48,7 +48,7 @@ Questions.propTypes = {
   score: Proptypes.any,
 }.isRequired;
 
-const mapStateToProps = ({ play: { questions, page, score } }) => ({
+const mapStateToProps = ({ player: { questions, page, score } }) => ({
   questions,
   page,
   score,

@@ -35,11 +35,11 @@ class Feedback extends React.Component {
         </p>
         <p>
           {'Hits: '}
-          <span data-testid="feedback-total-question">{ assertNumber }</span>
+          <p data-testid="feedback-total-question">{ assertNumber }</p>
         </p>
         <p>
           {'Score: '}
-          <span data-testid="feedback-total-score">{ playerScore }</span>
+          <p data-testid="feedback-total-score">{ playerScore }</p>
         </p>
         <button
           type="button"
@@ -63,8 +63,8 @@ class Feedback extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  assertNumber: state.play.score,
-  playerScore: state.play.score,
+  assertNumber: state.player.assertions,
+  playerScore: state.player.score,
   playerName: state.user.name,
   playerEmail: state.user.email,
 });
