@@ -39,7 +39,6 @@ class QuestionCard extends React.Component {
   };
 
   checkAnswer = ({ target: { id } }) => {
-    // const { question, dispatch, questions, page } = this.props;
     const { question, dispatch } = this.props;
     if (id === question.correct_answer) {
       console.log('YAY =^.^= KAWAII!!');
@@ -49,9 +48,6 @@ class QuestionCard extends React.Component {
       console.log('TT_TT MOSHI MOSHI DESU NE');
       // if hard mode score--?
     }
-    // const questionPointer = (page < questions.length - 1 ? page + 1 : 0);
-    // dispatch(NEXT_QUESTION(questionPointer));
-    // dispatch(NEXT_QUESTION((page < questionsLength - 1 ? page + 1 : 0))
     this.addStyle();
   };
 
@@ -79,21 +75,19 @@ class QuestionCard extends React.Component {
     }
   };
 
-  enableOptions = async () => {
-    this.setState({ optionsDisabled: false });
-  }
-
   disableOptions = async () => {
     this.setState({ optionsDisabled: true });
-  }
+  };
 
   secPasser = async (intervalId) => {
-    const { questionTimer: { totalTime } } = this.state;
+    const { questionTimer: { totalTime, visible } } = this.state;
     if (totalTime === 0) {
       clearInterval(intervalId);
       return;
     }
-    this.setState(({ questionTimer: { totalTime, visible } }) => ({questionTimer: { totalTime: totalTime - 1, visible }}));
+    this.setState(({ questionTimer }) => ({
+      questionTimer: { totalTime: questionTimer.totalTime - 1, visible,
+      } }));
   };
 
   questionListener = async () => {
@@ -101,7 +95,7 @@ class QuestionCard extends React.Component {
     const answerTime = 30000;
     const sec = 1000;
     const visible = true;
-    this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible }}));
+    this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible } }));
     const intervalId = setInterval(() => this.secPasser(intervalId), sec);
     setTimeout(() => this.disableOptions(), answerTime);
   };
@@ -112,25 +106,24 @@ class QuestionCard extends React.Component {
       isQuestionVisible,
       options,
       optionsDisabled,
-      questionTimer : {
+      questionTimer: {
         totalTime,
         visible,
       } } = this.state;
     this.verifyToken();
     return (
-      <div style={{ display: ( isQuestionVisible ? 'block' : 'none' )} }>
+      <div style={ { display: (isQuestionVisible ? 'block' : 'none') } }>
         <h1 data-testid="question-text">{ question.question }</h1>
         <h3 data-testid="question-category">{ question.category }</h3>
         <div data-testid="answer-options">
           {
             options.map((option) => (
               <button
-                className="options"
+                className="options questao"
                 type="button"
                 onClick={ this.checkAnswer }
                 key={ option }
                 id={ option }
-                className="questao"
                 data-testid={ option === question.correct_answer
                   ? 'correct-answer'
                   : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
@@ -140,7 +133,7 @@ class QuestionCard extends React.Component {
               </button>
             ))
           }
-          <span style={{ display: ( visible ? 'block' : 'none' )} } >{totalTime}</span>
+          <span style={ { display: (visible ? 'block' : 'none') } }>{totalTime}</span>
         </div>
       </div>
     );
@@ -156,16 +149,7 @@ QuestionCard.propTypes = {
     correct_answer: Proptypes.string,
     incorrect_answers: Proptypes.arrayOf(Proptypes.string),
   }).isRequired,
-  // questions: Proptypes.arrayOf(Proptypes.shape({
-  //  category: Proptypes.string,
-  //  type: Proptypes.string,
-  //  difficulty: Proptypes.string,
-  //  question: Proptypes.string,
-  //  correct_answer: Proptypes.string,
-  //  incorrect_answers: Proptypes.arrayOf(Proptypes.string),
-  // })).isRequired,
   dispatch: Proptypes.func.isRequired,
-  // spage: Proptypes.number.isRequired,
   history: Proptypes.arrayOf().isRequired,
 };
 
