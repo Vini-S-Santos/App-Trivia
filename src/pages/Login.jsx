@@ -1,8 +1,10 @@
-import PropTypes from 'prop-types';
+import Proptypes from 'prop-types';
 import React, { Component } from 'react';
-import getToken from '../services/fetches';
+import { connect } from 'react-redux';
+import { getToken, getQuestions } from '../services/fetches';
+import { SET_QUESTIONS } from '../redux/actions/index';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
 
@@ -33,8 +35,10 @@ export default class Login extends Component {
   };
 
   playButtonHandler = async () => {
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
     const tokenGenerator = await getToken();
+    const questions = await getQuestions(tokenGenerator);
+    dispatch(SET_QUESTIONS(questions.results));
     localStorage.setItem('token', tokenGenerator);
     history.push('/play');
   };
@@ -109,5 +113,8 @@ export default class Login extends Component {
 }
 
 Login.propTypes = {
-  history: PropTypes.arrayOf().isRequired,
+  history: Proptypes.arrayOf().isRequired,
+  dispatch: Proptypes.func.isRequired,
 };
+
+export default connect()(Login);
