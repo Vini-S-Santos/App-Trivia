@@ -27,21 +27,21 @@ class QuestionCard extends React.Component {
   };
 
   checkAnswer = ({ target: { id } }) => {
-    // const { question, dispatch, questions, page } = this.props;
+    const { intervalId, questionTimer: { remainingTime } } = this.state;
     const { question, dispatch } = this.props;
+    this.addStyle();
     if (id === question.correct_answer) {
       console.log('YAY =^.^= KAWAII!!');
       // add css class to btn
       const diffMod = this.getDiffMod(question.difficulty);
       const points = this.calcPoints(diffMod, remainingTime);
-      dispatch(ADD_POINT(points));      
+      dispatch(ADD_POINT(points));
     } else {
       console.log(' TT_TT MOSHI MOSHI DESU NE');
       // if hard mode score--?
     }
-      
-    
-    this.addStyle();
+
+
   };
 
   calcPoints = (diffMod, remainingTime) => (fixedPoints + (remainingTime * diffMod));
@@ -57,8 +57,8 @@ class QuestionCard extends React.Component {
     default:
       return 0;
     }
-  }; 
-  
+  };
+
   addStyle = () => {
     const respostas = document.querySelectorAll('.questao');
     const { question } = this.props;
