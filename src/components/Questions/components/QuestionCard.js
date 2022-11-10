@@ -22,6 +22,15 @@ class QuestionCard extends React.Component {
     options: [],
   };
 
+  componentDidMount() {
+    const { question } = this.props;
+    const answers = [...question.incorrect_answers, question.correct_answer];
+    const options = this.randomizeAnswers(answers);
+    this.setState({ options });
+    const waitTime = 5000;
+    setTimeout(() => this.questionListener(), waitTime);
+  }
+
   randomizeAnswers = (answrs) => {
     const newAnswersArr = answrs;
     for (let i = answrs.length - 1; i > 0; i -= 1) {
