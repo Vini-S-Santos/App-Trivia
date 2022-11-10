@@ -174,8 +174,10 @@ QuestionCard.propTypes = {
     incorrect_answers: Proptypes.arrayOf(Proptypes.string),
   }).isRequired,
   dispatch: Proptypes.func.isRequired,
-  history: Proptypes.arrayOf().isRequired,
-};
+  history: Proptypes.shape({
+    push: Proptypes.func,
+  }),
+}.isRequired;
 
 const mapStateToProps = ({ play: { question, page, questions } }) => ({
   question,
