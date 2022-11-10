@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
+// import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
+import { ADD_POINT } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
 
 class QuestionCard extends React.Component {
@@ -38,7 +39,8 @@ class QuestionCard extends React.Component {
   };
 
   checkAnswer = ({ target: { id } }) => {
-    const { question, dispatch, questions, page } = this.props;
+    // const { question, dispatch, questions, page } = this.props;
+    const { question, dispatch } = this.props;
     if (id === question.correct_answer) {
       console.log('YAY =^.^= KAWAII!!');
       // add css class to btn
@@ -47,9 +49,23 @@ class QuestionCard extends React.Component {
       console.log('TT_TT MOSHI MOSHI DESU NE');
       // if hard mode score--?
     }
-    const questionPointer = (page < questions.length - 1 ? page + 1 : 0);
-    dispatch(NEXT_QUESTION(questionPointer));
+    // const questionPointer = (page < questions.length - 1 ? page + 1 : 0);
+    // dispatch(NEXT_QUESTION(questionPointer));
     // dispatch(NEXT_QUESTION((page < questionsLength - 1 ? page + 1 : 0))
+    this.addStyle();
+  };
+
+  addStyle = () => {
+    const respostas = document.querySelectorAll('.questao');
+    const { question } = this.props;
+    respostas.forEach((element) => {
+      if (element.id === question.correct_answer) {
+        element.className = 'certa';
+      } else {
+        element.className = 'errada';
+      }
+      console.log(element);
+    });
   };
 
   verifyToken = async () => {
@@ -114,6 +130,7 @@ class QuestionCard extends React.Component {
                 onClick={ this.checkAnswer }
                 key={ option }
                 id={ option }
+                className="questao"
                 data-testid={ option === question.correct_answer
                   ? 'correct-answer'
                   : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
@@ -139,16 +156,16 @@ QuestionCard.propTypes = {
     correct_answer: Proptypes.string,
     incorrect_answers: Proptypes.arrayOf(Proptypes.string),
   }).isRequired,
-  questions: Proptypes.arrayOf(Proptypes.shape({
-    category: Proptypes.string,
-    type: Proptypes.string,
-    difficulty: Proptypes.string,
-    question: Proptypes.string,
-    correct_answer: Proptypes.string,
-    incorrect_answers: Proptypes.arrayOf(Proptypes.string),
-  })).isRequired,
+  // questions: Proptypes.arrayOf(Proptypes.shape({
+  //  category: Proptypes.string,
+  //  type: Proptypes.string,
+  //  difficulty: Proptypes.string,
+  //  question: Proptypes.string,
+  //  correct_answer: Proptypes.string,
+  //  incorrect_answers: Proptypes.arrayOf(Proptypes.string),
+  // })).isRequired,
   dispatch: Proptypes.func.isRequired,
-  page: Proptypes.number.isRequired,
+  // spage: Proptypes.number.isRequired,
   history: Proptypes.arrayOf().isRequired,
 };
 
