@@ -12,6 +12,14 @@ const easyMod = 1;
 class QuestionCard extends React.Component {
   state = {
     API_ER_CODE: 3,
+    intervalId: 0,
+    isQuestionVisible: false,
+    optionsDisabled: false,
+    questionTimer: {
+      remainingTime: 30,
+      visible: false,
+    },
+    options: [],
   };
 
   randomizeAnswers = (answrs) => {
