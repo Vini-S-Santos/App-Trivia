@@ -12,6 +12,8 @@ class Questions extends React.Component {
     const questionPointer = (page < questions.length - 1 ? page + 1
       : history.push('/feedback'));
     dispatch(NEXT_QUESTION(questionPointer));
+    console.log(this.props);
+    // dispatch(NEXT_QUESTION((page < questionsLength - 1 ? page + 1 : 0))
   };
 
   render() {

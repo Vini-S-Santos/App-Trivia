@@ -18,7 +18,7 @@ const play = (state = INITIAL_STATE, { type, payload }) => {
   case ACT_NEXT_QUESTION:
     return { ...state, page: payload, question: state.questions[payload] };
   case ADD_POINT_TO_SCORE:
-    return { ...state, score: state.score + payload.pointsToAdd };
+    return { ...state, score: state.score + 1 };
   default:
     return { ...state };
   }
