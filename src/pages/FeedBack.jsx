@@ -60,7 +60,7 @@ class Feedback extends React.Component {
       </div>
     );
   }
-}
+} //
 
 const mapStateToProps = (state) => ({
   assertNumber: state.player.assertions,
