@@ -98,6 +98,32 @@ class QuestionCard extends React.Component {
     }
   };
 
+  disableOptions = async () => {
+    this.setState({ optionsDisabled: true });
+  };
+
+  secPasser = async () => {
+    const { intervalId, questionTimer: { remainingTime, visible } } = this.state;
+    if (remainingTime === 0) {
+      clearInterval(intervalId);
+      return;
+    }
+    this.setState(({ questionTimer }) => ({
+      questionTimer: { remainingTime: questionTimer.remainingTime - 1, visible,
+      } }));
+  };
+
+  questionListener = async () => {
+    this.setState({ isQuestionVisible: true });
+    const answerTime = 30000;
+    const sec = 1000;
+    const visible = true;
+    this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible } }));
+    const intervalId = setInterval(() => this.secPasser(), sec);
+    this.setState({ intervalId });
+    setTimeout(() => this.disableOptions(), answerTime);
+  };
+
   render() {
     const { question } = this.props;
     const {
