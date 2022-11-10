@@ -12,7 +12,7 @@ class QuestionCard extends React.Component {
   randomizeAnswers = (answrs) => {
     const newAnswersArr = answrs;
     for (let i = answrs.length - 1; i > 0; i -= 1) {
-      const randomIndex = Math.round(Math.random() * (i + 1));
+      const randomIndex = Math.floor(Math.random() * (i + 1));
       [
         newAnswersArr[i],
         newAnswersArr[randomIndex],
