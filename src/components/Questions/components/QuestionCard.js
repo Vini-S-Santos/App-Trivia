@@ -7,7 +7,23 @@ import { getQuestions } from '../../../services/fetches';
 class QuestionCard extends React.Component {
   state = {
     API_ER_CODE: 3,
+    isQuestionVisible: false,
+    optionsDisabled: false,
+    questionTimer: {
+      totalTime: 30,
+      visible: false,
+    },
+    options: [],
   };
+
+  componentDidMount() {
+    const { question } = this.props;
+    const answers = [...question.incorrect_answers, question.correct_answer];
+    const options = this.randomizeAnswers(answers);
+    this.setState({ options });
+    const waitTime = 5000;
+    setTimeout(() => this.questionListener(), waitTime);
+  }
 
   randomizeAnswers = (answrs) => {
     const newAnswersArr = answrs;
@@ -28,7 +44,7 @@ class QuestionCard extends React.Component {
       // add css class to btn
       dispatch(ADD_POINT());
     } else {
-      console.log(' TT_TT MOSHI MOSHI DESU NE');
+      console.log('TT_TT MOSHI MOSHI DESU NE');
       // if hard mode score--?
     }
     const questionPointer = (page < questions.length - 1 ? page + 1 : 0);
@@ -47,19 +63,53 @@ class QuestionCard extends React.Component {
     }
   };
 
+  enableOptions = async () => {
+    this.setState({ optionsDisabled: false });
+  }
+
+  disableOptions = async () => {
+    this.setState({ optionsDisabled: true });
+  }
+
+  secPasser = async (intervalId) => {
+    const { questionTimer: { totalTime } } = this.state;
+    if (totalTime === 0) {
+      clearInterval(intervalId);
+      return;
+    }
+    this.setState(({ questionTimer: { totalTime, visible } }) => ({questionTimer: { totalTime: totalTime - 1, visible }}));
+  };
+
+  questionListener = async () => {
+    this.setState({ isQuestionVisible: true });
+    const answerTime = 30000;
+    const sec = 1000;
+    const visible = true;
+    this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible }}));
+    const intervalId = setInterval(() => this.secPasser(intervalId), sec);
+    setTimeout(() => this.disableOptions(), answerTime);
+  };
+
   render() {
     const { question } = this.props;
-    const answers = [...question.incorrect_answers, question.correct_answer];
-    const options = this.randomizeAnswers(answers);
+    const {
+      isQuestionVisible,
+      options,
+      optionsDisabled,
+      questionTimer : {
+        totalTime,
+        visible,
+      } } = this.state;
     this.verifyToken();
     return (
-      <>
+      <div style={{ display: ( isQuestionVisible ? 'block' : 'none' )} }>
         <h1 data-testid="question-text">{ question.question }</h1>
         <h3 data-testid="question-category">{ question.category }</h3>
         <div data-testid="answer-options">
           {
             options.map((option) => (
               <button
+                className="options"
                 type="button"
                 onClick={ this.checkAnswer }
                 key={ option }
@@ -67,13 +117,15 @@ class QuestionCard extends React.Component {
                 data-testid={ option === question.correct_answer
                   ? 'correct-answer'
                   : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
+                disabled={ optionsDisabled }
               >
                 {option}
               </button>
             ))
           }
+          <span style={{ display: ( visible ? 'block' : 'none' )} } >{totalTime}</span>
         </div>
-      </>
+      </div>
     );
   }
 }

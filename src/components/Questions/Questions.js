@@ -5,10 +5,8 @@ import QuestionCard from './components/QuestionCard';
 
 class Questions extends React.Component {
   handleNextQuestion = () => {
-    const { questions } = this.props;
+    // const { questions } = this.props;
     // temp for debug purposes
-    this.setState((prev) => ({
-      page: prev.page < questions.length - 1 ? prev.page + 1 : 0 }));
   };
 
   render() {
