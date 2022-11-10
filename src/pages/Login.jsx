@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
+import Proptypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { REGISTER_EMAIL, REGISTER_USER } from '../redux/actions';
-import getToken from '../services/fetches';
+import { getToken, getQuestions } from '../services/fetches';
+import { SET_QUESTIONS, REGISTER_EMAIL, REGISTER_USER } from '../redux/actions/index';
 
 class Login extends Component {
   constructor() {
@@ -12,6 +12,7 @@ class Login extends Component {
       isDisabled: true,
       nameInput: '',
       emailInput: '',
+      API_ER_CODE: 3,
     };
   }
 
@@ -37,12 +38,17 @@ class Login extends Component {
   playButtonHandler = async (evt) => {
     evt.preventDefault();
     const { history, dispatch } = this.props;
-    const { nameInput, emailInput } = this.state;
-
+    const { nameInput, emailInput, API_ER_CODE } = this.state;
     dispatch(REGISTER_EMAIL(emailInput));
     dispatch(REGISTER_USER(nameInput));
-
     const tokenGenerator = await getToken();
+    const questions = await getQuestions(tokenGenerator);
+    if (questions.response_code === API_ER_CODE) {
+      localStorage.removeItem('token');
+      history.push('/');
+      return;
+    }
+    dispatch(SET_QUESTIONS(questions.results));
     localStorage.setItem('token', tokenGenerator);
     history.push('/play');
   };
@@ -123,9 +129,9 @@ const mapStateToProps = (state) => ({
 });
 
 Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
+  dispatch: Proptypes.func.isRequired,
+  history: Proptypes.shape({
+    push: Proptypes.func,
   }).isRequired,
 };
 
