@@ -67,7 +67,7 @@ class QuestionCard extends React.Component {
                 ? 'correct-answer'
                 : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
             >
-              { option }
+              <span data-testid="answer-options">{option}</span>
             </button>
           ))
         }
