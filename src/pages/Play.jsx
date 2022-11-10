@@ -2,6 +2,7 @@ import { Component } from 'react';
 import Proptypes from 'prop-types';
 import Questions from '../components/Questions/Questions';
 import { getQuestions } from '../services/fetches';
+import Header from '../components/Header';
 
 class Play extends Component {
   state = {
@@ -22,15 +23,18 @@ class Play extends Component {
   render() {
     return (
       <>
+        <Header />
         <h1>Jogatina</h1>
         <Questions />
-      </>
+      </> 
     );
   }
 }
 
 Play.propTypes = {
-  history: Proptypes.arrayOf().isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default Play;

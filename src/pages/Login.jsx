@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getToken, getQuestions } from '../services/fetches';
 import { SET_QUESTIONS } from '../redux/actions/index';
+import { REGISTER_EMAIL, REGISTER_USER } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -35,9 +36,12 @@ class Login extends Component {
     );
   };
 
-  playButtonHandler = async () => {
+  playButtonHandler = async (evt) => {
+    evt.preventDefault();
     const { history, dispatch } = this.props;
-    const { API_ER_CODE } = this.state;
+    const { nameInput, emailInput, API_ER_CODE } = this.state;
+    dispatch(REGISTER_EMAIL(emailInput));
+    dispatch(REGISTER_USER(nameInput));
     const tokenGenerator = await getToken();
     const questions = await getQuestions(tokenGenerator);
     if (questions.response_code === API_ER_CODE) {
@@ -60,6 +64,7 @@ class Login extends Component {
       nameInput,
       emailInput,
       isDisabled } = this.state;
+
     return (
       <div>
 
@@ -119,9 +124,18 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+  email: state.user.email,
+});
+
 Login.propTypes = {
-  history: Proptypes.arrayOf().isRequired,
-  dispatch: Proptypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect()(Login);
+
+export default connect(mapStateToProps)(Login);
