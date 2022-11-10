@@ -12,6 +12,7 @@ class Login extends Component {
       isDisabled: true,
       nameInput: '',
       emailInput: '',
+      API_ER_CODE: 3,
     };
   }
 
@@ -36,8 +37,15 @@ class Login extends Component {
 
   playButtonHandler = async () => {
     const { history, dispatch } = this.props;
+    const { API_ER_CODE } = this.state;
     const tokenGenerator = await getToken();
     const questions = await getQuestions(tokenGenerator);
+    if (questions.response_code === API_ER_CODE) {
+      localStorage.removeItem('token');
+      const { history } = this.props;
+      history.push('/');
+      return;
+    }
     dispatch(SET_QUESTIONS(questions.results));
     localStorage.setItem('token', tokenGenerator);
     history.push('/play');

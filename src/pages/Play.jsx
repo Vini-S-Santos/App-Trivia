@@ -13,6 +13,7 @@ class Play extends Component {
     const { API_ER_CODE } = this.state;
     const res = await getQuestions(token);
     if (res.response_code === API_ER_CODE) {
+      localStorage.removeItem('token');
       const { history } = this.props;
       history.push('/');
     }
