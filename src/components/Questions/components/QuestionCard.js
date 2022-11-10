@@ -4,7 +4,11 @@ import Proptypes from 'prop-types';
 // import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
 import { ADD_POINT } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
-import {clear} from '@testing-library/user-event/dist/clear';
+
+const fixedPoints = 10;
+const hardMod = 3;
+const mediumMod = 2;
+const easyMod = 1;
 
 class QuestionCard extends React.Component {
   state = {
@@ -48,30 +52,28 @@ class QuestionCard extends React.Component {
     const { question, dispatch } = this.props;
     if (id === question.correct_answer) {
       console.log('YAY =^.^= KAWAII!!');
-      // add css class to btn
       const diffMod = this.getDiffMod(question.difficulty);
       const points = this.calcPoints(diffMod, remainingTime);
       dispatch(ADD_POINT(points));
     } else {
       console.log('TT_TT MOSHI MOSHI DESU NE');
-      // if hard mode score--?
     }
   };
 
-  calcPoints = (diffMod, remainingTime) => (10 + (remainingTime * diffMod))
+  calcPoints = (diffMod, remainingTime) => (fixedPoints + (remainingTime * diffMod));
 
   getDiffMod = (diff) => {
     switch (diff) {
-      case 'easy':
-        return 1;
-      case 'medium':
-        return 2;
-      case 'hard':
-        return 3;
-      default:
-        return 0;
+    case 'easy':
+      return easyMod;
+    case 'medium':
+      return mediumMod;
+    case 'hard':
+      return hardMod;
+    default:
+      return 0;
     }
-  }
+  };
 
   addStyle = () => {
     const respostas = document.querySelectorAll('.questao');
