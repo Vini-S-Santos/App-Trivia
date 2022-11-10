@@ -45,7 +45,7 @@ class QuestionCard extends React.Component {
       const { history } = this.props;
       history.push('/');
     }
-  }
+  };
 
   render() {
     const { question } = this.props;
