@@ -91,32 +91,40 @@ class QuestionCard extends React.Component {
 
   render() {
     const { question } = this.props;
-    const answers = [...question.incorrect_answers, question.correct_answer];
-    const options = this.randomizeAnswers(answers);
+    const {
+      isQuestionVisible,
+      options,
+      optionsDisabled,
+      questionTimer: {
+        remainingTime,
+        visible,
+      } } = this.state;
     this.verifyToken();
     return (
-      <>
+      <div style={ { display: (isQuestionVisible ? 'block' : 'none') } }>
         <h1 data-testid="question-text">{ question.question }</h1>
         <h3 data-testid="question-category">{ question.category }</h3>
         <div data-testid="answer-options">
           {
             options.map((option) => (
               <button
+                className="options questao"
                 type="button"
                 onClick={ this.checkAnswer }
                 key={ option }
                 id={ option }
-                className="questao"
                 data-testid={ option === question.correct_answer
                   ? 'correct-answer'
                   : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
+                disabled={ optionsDisabled }
               >
                 {option}
               </button>
             ))
           }
+          <span style={ { display: (visible ? 'block' : 'none') } }>{remainingTime}</span>
         </div>
-      </>
+      </div>
     );
   }
 }
