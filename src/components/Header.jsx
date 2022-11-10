@@ -16,11 +16,11 @@ class Header extends Component {
           alt="Gravatar do usuario"
         />
 
-        <span
+        <p
           data-testid="header-player-name"
         >
           {user}
-        </span>
+        </p>
 
         <span>
           {' '}
@@ -36,11 +36,11 @@ class Header extends Component {
 
         </span>
 
-        <span
+        <p
           data-testid="header-score"
         >
           {score}
-        </span>
+        </p>
 
       </header>
     );
@@ -56,7 +56,7 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
   user: state.user.user,
   email: state.user.email,
-  score: state.score.score,
+  score: state.play.score,
 });
 
 export default connect(mapStateToProps)(Header);

@@ -114,8 +114,10 @@ QuestionCard.propTypes = {
   // })).isRequired,
   dispatch: Proptypes.func.isRequired,
   // spage: Proptypes.number.isRequired,
-  history: Proptypes.arrayOf().isRequired,
-};
+  history: Proptypes.shape({
+    push: Proptypes.func,
+  }),
+}.isRequired;
 
 const mapStateToProps = ({ play: { question, page, questions } }) => ({
   question,
