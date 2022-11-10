@@ -22,8 +22,9 @@ const NEXT_QUESTION = (questionIndex) => ({
   payload: (questionIndex),
 });
 
-const ADD_POINT = () => ({
+const ADD_POINT = (pointsToAdd) => ({
   type: ADD_POINT_TO_SCORE,
+  payload: { pointsToAdd },
 });
 
 export {

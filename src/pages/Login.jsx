@@ -2,7 +2,7 @@ import Proptypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getToken, getQuestions } from '../services/fetches';
-import { SET_QUESTIONS, REGISTER_EMAIL, REGISTER_USER } from '../redux/actions/index';
+import { REGISTER_EMAIL, REGISTER_USER, SET_QUESTIONS } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -35,8 +35,8 @@ class Login extends Component {
     );
   };
 
-  playButtonHandler = async (evt) => {
-    evt.preventDefault();
+  playButtonHandler = async () => {
+    // evt.preventDefault();
     const { history, dispatch } = this.props;
     const { nameInput, emailInput, API_ER_CODE } = this.state;
     dispatch(REGISTER_EMAIL(emailInput));

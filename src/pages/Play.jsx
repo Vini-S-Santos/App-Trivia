@@ -34,7 +34,7 @@ class Play extends Component {
 Play.propTypes = {
   history: Proptypes.shape({
     push: Proptypes.func,
-  }),
-}.isRequired;
+  }).isRequired,
+};
 
 export default Play;
