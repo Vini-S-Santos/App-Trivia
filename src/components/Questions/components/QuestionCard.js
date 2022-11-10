@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-// import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
 import { ADD_POINT } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
 
