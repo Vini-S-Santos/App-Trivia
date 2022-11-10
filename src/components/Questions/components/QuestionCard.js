@@ -2,8 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
+import { getQuestions } from '../../../services/fetches';
 
 class QuestionCard extends React.Component {
+  state = {
+    API_ER_CODE: 3,
+  };
+
+  async componentDidMount() {
+    const token = localStorage.getItem('token');
+    const { API_ER_CODE } = this.state;
+    const res = await getQuestions(token);
+    if (res.response_code === API_ER_CODE) {
+      const { history } = this.props;
+      history.push('/');
+    }
+  }
+
   randomizeAnswers = (answrs) => {
     const newAnswersArr = answrs;
     for (let i = answrs.length - 1; i > 0; i -= 1) {
@@ -76,6 +91,7 @@ QuestionCard.propTypes = {
   })).isRequired,
   dispatch: Proptypes.func.isRequired,
   page: Proptypes.number.isRequired,
+  history: Proptypes.arrayOf().isRequired,
 };
 
 const mapStateToProps = ({ play: { question, page, questions } }) => ({
