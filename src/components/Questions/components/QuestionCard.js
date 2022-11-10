@@ -54,8 +54,8 @@ class QuestionCard extends React.Component {
     this.verifyToken();
     return (
       <>
-        <h1>{ question.question }</h1>
-        <h3>{ question.category }</h3>
+        <h1 data-testid="question-text">{ question.question }</h1>
+        <h3 data-testid="question-category">{ question.category }</h3>
         {
           options.map((option) => (
             <button
@@ -63,6 +63,9 @@ class QuestionCard extends React.Component {
               onClick={ this.checkAnswer }
               key={ option }
               id={ option }
+              data-testid={ option === question.correct_answer
+                ? 'correct-answer'
+                : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
             >
               { option }
             </button>
