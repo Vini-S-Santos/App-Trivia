@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   score: 0,
 };
 
-const play = (state = INITIAL_STATE, { type, payload }) => {
+const player = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
   case ACT_SET_QUESTIONS:
     return { ...state, questions: [...payload], question: payload[state.page] };
@@ -24,4 +24,4 @@ const play = (state = INITIAL_STATE, { type, payload }) => {
   }
 };
 
-export default play;
+export default player;

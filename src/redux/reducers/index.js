@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import user from './userAndEmail';
-import play from './play';
+import player from './play';
 
-const rootReducer = combineReducers({ user, play });
+const rootReducer = combineReducers({ user, player });
 
 export default rootReducer;
