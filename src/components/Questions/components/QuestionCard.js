@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-// import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
 import { ADD_POINT } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
+
+const fixedPoints = 10;
+const hardMod = 3;
+const mediumMod = 2;
+const easyMod = 1;
 
 class QuestionCard extends React.Component {
   state = {
@@ -28,17 +32,33 @@ class QuestionCard extends React.Component {
     if (id === question.correct_answer) {
       console.log('YAY =^.^= KAWAII!!');
       // add css class to btn
-      dispatch(ADD_POINT());
+      const diffMod = this.getDiffMod(question.difficulty);
+      const points = this.calcPoints(diffMod, remainingTime);
+      dispatch(ADD_POINT(points));      
     } else {
       console.log(' TT_TT MOSHI MOSHI DESU NE');
       // if hard mode score--?
     }
-    // const questionPointer = (page < questions.length - 1 ? page + 1 : 0);
-    // dispatch(NEXT_QUESTION(questionPointer));
-    // dispatch(NEXT_QUESTION((page < questionsLength - 1 ? page + 1 : 0))
+      
+    
     this.addStyle();
   };
 
+  calcPoints = (diffMod, remainingTime) => (fixedPoints + (remainingTime * diffMod));
+
+  getDiffMod = (diff) => {
+    switch (diff) {
+    case 'easy':
+      return easyMod;
+    case 'medium':
+      return mediumMod;
+    case 'hard':
+      return hardMod;
+    default:
+      return 0;
+    }
+  }; 
+  
   addStyle = () => {
     const respostas = document.querySelectorAll('.questao');
     const { question } = this.props;
@@ -104,16 +124,7 @@ QuestionCard.propTypes = {
     correct_answer: Proptypes.string,
     incorrect_answers: Proptypes.arrayOf(Proptypes.string),
   }).isRequired,
-  // questions: Proptypes.arrayOf(Proptypes.shape({
-  //  category: Proptypes.string,
-  //  type: Proptypes.string,
-  //  difficulty: Proptypes.string,
-  //  question: Proptypes.string,
-  //  correct_answer: Proptypes.string,
-  //  incorrect_answers: Proptypes.arrayOf(Proptypes.string),
-  // })).isRequired,
   dispatch: Proptypes.func.isRequired,
-  // spage: Proptypes.number.isRequired,
   history: Proptypes.shape({
     push: Proptypes.func,
   }),
