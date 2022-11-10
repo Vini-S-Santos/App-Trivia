@@ -56,21 +56,23 @@ class QuestionCard extends React.Component {
       <>
         <h1 data-testid="question-text">{ question.question }</h1>
         <h3 data-testid="question-category">{ question.category }</h3>
-        {
-          options.map((option) => (
-            <button
-              type="button"
-              onClick={ this.checkAnswer }
-              key={ option }
-              id={ option }
-              data-testid={ option === question.correct_answer
-                ? 'correct-answer'
-                : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
-            >
-              <span data-testid="answer-options">{option}</span>
-            </button>
-          ))
-        }
+        <div data-testid="answer-options">
+          {
+            options.map((option) => (
+              <button
+                type="button"
+                onClick={ this.checkAnswer }
+                key={ option }
+                id={ option }
+                data-testid={ option === question.correct_answer
+                  ? 'correct-answer'
+                  : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
+              >
+                {option}
+              </button>
+            ))
+          }
+        </div>
       </>
     );
   }
