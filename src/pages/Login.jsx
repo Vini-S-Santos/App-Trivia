@@ -42,7 +42,6 @@ class Login extends Component {
     const questions = await getQuestions(tokenGenerator);
     if (questions.response_code === API_ER_CODE) {
       localStorage.removeItem('token');
-      const { history } = this.props;
       history.push('/');
       return;
     }
