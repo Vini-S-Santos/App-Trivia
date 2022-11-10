@@ -26,15 +26,15 @@ class Play extends Component {
         <Header />
         <h1>Jogatina</h1>
         <Questions />
-      </> 
+      </>
     );
   }
 }
 
 Play.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
+  history: Proptypes.shape({
+    push: Proptypes.func,
+  }),
+}.isRequired;
 
 export default Play;

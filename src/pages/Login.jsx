@@ -2,8 +2,7 @@ import Proptypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getToken, getQuestions } from '../services/fetches';
-import { SET_QUESTIONS } from '../redux/actions/index';
-import { REGISTER_EMAIL, REGISTER_USER } from '../redux/actions';
+import { SET_QUESTIONS, REGISTER_EMAIL, REGISTER_USER } from '../redux/actions/index';
 
 class Login extends Component {
   constructor() {
@@ -130,12 +129,10 @@ const mapStateToProps = (state) => ({
 });
 
 Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
+  dispatch: Proptypes.func.isRequired,
+  history: Proptypes.shape({
+    push: Proptypes.func,
   }).isRequired,
 };
-
-export default connect()(Login);
 
 export default connect(mapStateToProps)(Login);
