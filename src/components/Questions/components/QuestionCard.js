@@ -4,14 +4,16 @@ import Proptypes from 'prop-types';
 // import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
 import { ADD_POINT } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
+import {clear} from '@testing-library/user-event/dist/clear';
 
 class QuestionCard extends React.Component {
   state = {
     API_ER_CODE: 3,
+    intervalId: 0,
     isQuestionVisible: false,
     optionsDisabled: false,
     questionTimer: {
-      totalTime: 30,
+      remainingTime: 30,
       visible: false,
     },
     options: [],
@@ -39,17 +41,37 @@ class QuestionCard extends React.Component {
   };
 
   checkAnswer = ({ target: { id } }) => {
+    const { intervalId, questionTimer: { remainingTime } } = this.state;
+    clearInterval(intervalId);
+    this.disableOptions();
+    this.addStyle();
     const { question, dispatch } = this.props;
     if (id === question.correct_answer) {
       console.log('YAY =^.^= KAWAII!!');
       // add css class to btn
-      dispatch(ADD_POINT());
+      const diffMod = this.getDiffMod(question.difficulty);
+      const points = this.calcPoints(diffMod, remainingTime);
+      dispatch(ADD_POINT(points));
     } else {
       console.log('TT_TT MOSHI MOSHI DESU NE');
       // if hard mode score--?
     }
-    this.addStyle();
   };
+
+  calcPoints = (diffMod, remainingTime) => (10 + (remainingTime * diffMod))
+
+  getDiffMod = (diff) => {
+    switch (diff) {
+      case 'easy':
+        return 1;
+      case 'medium':
+        return 2;
+      case 'hard':
+        return 3;
+      default:
+        return 0;
+    }
+  }
 
   addStyle = () => {
     const respostas = document.querySelectorAll('.questao');
@@ -79,14 +101,14 @@ class QuestionCard extends React.Component {
     this.setState({ optionsDisabled: true });
   };
 
-  secPasser = async (intervalId) => {
-    const { questionTimer: { totalTime, visible } } = this.state;
-    if (totalTime === 0) {
+  secPasser = async () => {
+    const { intervalId, questionTimer: { remainingTime, visible } } = this.state;
+    if (remainingTime === 0) {
       clearInterval(intervalId);
       return;
     }
     this.setState(({ questionTimer }) => ({
-      questionTimer: { totalTime: questionTimer.totalTime - 1, visible,
+      questionTimer: { remainingTime: questionTimer.remainingTime - 1, visible,
       } }));
   };
 
@@ -96,7 +118,8 @@ class QuestionCard extends React.Component {
     const sec = 1000;
     const visible = true;
     this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible } }));
-    const intervalId = setInterval(() => this.secPasser(intervalId), sec);
+    const intervalId = setInterval(() => this.secPasser(), sec);
+    this.setState({ intervalId });
     setTimeout(() => this.disableOptions(), answerTime);
   };
 
@@ -107,7 +130,7 @@ class QuestionCard extends React.Component {
       options,
       optionsDisabled,
       questionTimer: {
-        totalTime,
+        remainingTime,
         visible,
       } } = this.state;
     this.verifyToken();
@@ -133,7 +156,7 @@ class QuestionCard extends React.Component {
               </button>
             ))
           }
-          <span style={ { display: (visible ? 'block' : 'none') } }>{totalTime}</span>
+          <span style={ { display: (visible ? 'block' : 'none') } }>{remainingTime}</span>
         </div>
       </div>
     );
