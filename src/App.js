@@ -4,7 +4,7 @@ import './App.css';
 import Config from './pages/Config';
 import Login from './pages/Login';
 import Play from './pages/Play';
-import FeedBack from './pages/FeedBack';
+import FeedBack from './pages/Feedback';
 import Ranking from './pages/Ranking';
 
 export default function App() {
