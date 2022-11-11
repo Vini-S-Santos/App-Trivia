@@ -63,7 +63,7 @@ describe('Testa a pagina de login', () => {
         userEvent.type(emailInput, 'testing@email.com');
 
         userEvent.click(playButton);
-        const TIME = 3000;
+        const TIME = 4000;
         await new Promise((r) => setTimeout(r, TIME));
         expect(history.location.pathname).toBe('/play');
       });
