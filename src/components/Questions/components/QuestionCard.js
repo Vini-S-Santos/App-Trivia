@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import {ACT_ENABLE_NEXT_BTN, ADD_POINT, DISABLE_NEXT_BTN, ENABLE_NEXT_BTN} from '../../../redux/actions';
+import { ADD_POINT, DISABLE_NEXT_BTN, ENABLE_NEXT_BTN } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
 
 const fixedPoints = 10;
@@ -119,11 +119,12 @@ class QuestionCard extends React.Component {
   enableNextBtn = () => {
     const { dispatch } = this.props;
     dispatch(ENABLE_NEXT_BTN());
-  }
+  };
 
   disableNextBtn = () => {
+    const { dispatch } = this.props;
     dispatch(DISABLE_NEXT_BTN());
-  }
+  };
 
   enableOptions = async () => {
     this.setState({ optionsDisabled: false });

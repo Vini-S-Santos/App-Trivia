@@ -4,7 +4,7 @@ import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import QuestionCard from './components/QuestionCard';
-import {DISABLE_NEXT_BTN, NEXT_QUESTION} from '../../redux/actions';
+import { DISABLE_NEXT_BTN, NEXT_QUESTION } from '../../redux/actions';
 
 class Questions extends React.Component {
   handleNextQuestion = () => {

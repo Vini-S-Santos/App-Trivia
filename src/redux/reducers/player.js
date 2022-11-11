@@ -26,7 +26,7 @@ const player = (state = INITIAL_STATE, { type, payload }) => {
   case ACT_ENABLE_NEXT_BTN:
     return { ...state, nextBtnEnabled: true };
   case ACT_DISABLE_NEXT_BTN:
-    return { ...state, nextBtnEnabled: false};
+    return { ...state, nextBtnEnabled: false };
   default:
     return { ...state };
   }
