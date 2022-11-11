@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Feedback extends React.Component {
@@ -35,12 +35,12 @@ class Feedback extends React.Component {
         </p>
         <p>
           {'Hits: '}
-          <p data-testid="feedback-total-question">{ assertNumber }</p>
         </p>
+        <p data-testid="feedback-total-question">{ assertNumber }</p>
         <p>
           {'Score: '}
-          <p data-testid="feedback-total-score">{ playerScore }</p>
         </p>
+        <p data-testid="feedback-total-score">{ playerScore }</p>
         <button
           type="button"
           className="feedback-btn"
@@ -65,7 +65,7 @@ class Feedback extends React.Component {
 const mapStateToProps = (state) => ({
   assertNumber: state.player.assertions,
   playerScore: state.player.score,
-  playerName: state.user.name,
+  playerName: state.user.user,
   playerEmail: state.user.email,
 });
 
