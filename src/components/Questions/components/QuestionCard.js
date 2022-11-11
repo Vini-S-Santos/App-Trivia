@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { ADD_POINT } from '../../../redux/actions';
+import { ADD_POINT, ENABLE_NEXT_BTN } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
 
 const fixedPoints = 10;
@@ -13,6 +13,7 @@ class QuestionCard extends React.Component {
   state = {
     API_ER_CODE: 3,
     intervalId: 0,
+    timeoutId: 0,
     isQuestionVisible: false,
     optionsDisabled: false,
     questionTimer: {
@@ -61,8 +62,10 @@ class QuestionCard extends React.Component {
   };
 
   checkAnswer = ({ target: { id } }) => {
-    const { intervalId, questionTimer: { remainingTime } } = this.state;
+    const { timeoutId, intervalId, questionTimer: { remainingTime } } = this.state;
+    this.enableNextBtn();
     clearInterval(intervalId);
+    clearTimeout(timeoutId);
     this.disableOptions();
     this.addStyle();
     const { question, dispatch } = this.props;
@@ -115,6 +118,18 @@ class QuestionCard extends React.Component {
     }
   };
 
+  enableNextBtn = () => {
+    const { dispatch } = this.props;
+    dispatch(ENABLE_NEXT_BTN());
+  };
+
+  /*
+  disableNextBtn = () => {
+    const { dispatch } = this.props;
+    dispatch(DISABLE_NEXT_BTN());
+  };
+  */
+
   enableOptions = async () => {
     this.setState({ optionsDisabled: false });
   };
@@ -142,7 +157,11 @@ class QuestionCard extends React.Component {
     this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible } }));
     const intervalId = setInterval(() => this.secPasser(), sec);
     this.setState({ intervalId });
-    setTimeout(() => this.disableOptions(), answerTime);
+    const timeoutId = setTimeout(() => {
+      this.disableOptions();
+      this.enableNextBtn();
+    }, answerTime);
+    this.setState({ timeoutId });
   };
 
   render() {
