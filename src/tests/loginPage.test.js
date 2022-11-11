@@ -43,9 +43,9 @@ describe('Testa a pagina de login', () => {
 
     it('Testa se a página muda após o usuário clicar no botão de configurações', () => {
         const { history } = renderWithRouterAndRedux(<App />);
-    
+
         const settingsButton = screen.getByRole('button', { name: /configurações/i });
-    
+
         expect(history.location.pathname).toBe('/');
         userEvent.click(settingsButton);
         expect(history.location.pathname).toBe('/config');
@@ -53,17 +53,17 @@ describe('Testa a pagina de login', () => {
 
       it('Testa se a página muda após o usuário clicar no botão de Play', async () => {
         const { history } = renderWithRouterAndRedux(<App />);
-    
+
         const nameInput = screen.getByTestId('input-player-name')
         const emailInput = screen.getByTestId('input-gravatar-email')
         const playButton = screen.getByRole('button', { name: 'Play' });
-    
+
         expect(history.location.pathname).toBe('/');
         userEvent.type(nameInput, 'testing name');
         userEvent.type(emailInput, 'testing@email.com');
-    
+
         userEvent.click(playButton);
-        const TIME = 2000;
+        const TIME = 3000;
         await new Promise((r) => setTimeout(r, TIME));
         expect(history.location.pathname).toBe('/play');
       });
