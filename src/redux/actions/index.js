@@ -3,6 +3,7 @@ export const ACT_NEXT_QUESTION = 'NEXT_QUESTION';
 export const ADD_POINT_TO_SCORE = 'ADD_POINT';
 export const ACT_ENABLE_NEXT_BTN = 'ENABLE_NEXT_BTN';
 export const ACT_DISABLE_NEXT_BTN = 'DISABLE_NEXT_BTN';
+export const ACT_RESET_STATE = 'RESET_STATE';
 
 const REGISTER_EMAIL = (registeredEmail) => ({
   type: 'REGISTER_EMAIL',
@@ -37,6 +38,11 @@ const DISABLE_NEXT_BTN = () => ({
   type: ACT_DISABLE_NEXT_BTN,
 });
 
+const RESET_STATE = () => ({
+  type: ACT_RESET_STATE,
+  payload: 0,
+});
+
 export {
   REGISTER_EMAIL,
   REGISTER_USER,
@@ -45,4 +51,5 @@ export {
   ADD_POINT,
   ENABLE_NEXT_BTN,
   DISABLE_NEXT_BTN,
+  RESET_STATE,
 };

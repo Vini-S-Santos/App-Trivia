@@ -1,13 +1,19 @@
 import { MD5 } from 'crypto-js';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// import { MD5 } from 'crypto-js';
+import { connect } from 'react-redux';
+import { RESET_STATE } from '../redux/actions';
 
 class Ranking extends Component {
+  resetStates = () => {
+    const { dispatch, history } = this.props;
+    dispatch(RESET_STATE());
+    history.push('/');
+  };
+
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     console.log(ranking);
-    const { history } = this.props;
     return (
       <>
         <h1 data-testid="ranking-title">Ranking</h1>
@@ -24,7 +30,7 @@ class Ranking extends Component {
               <span
                 data-testid={ `player-name-${index}` }
               >
-                { obj.playerEmail}
+                { obj.playerName }
               </span>
               <span
                 data-testid={ `player-score-${index}` }
@@ -35,7 +41,7 @@ class Ranking extends Component {
         <button
           type="button"
           data-testid="btn-go-home"
-          onClick={ () => history.push('/') }
+          onClick={ this.resetStates }
         >
           Voltar a página inicial
         </button>
@@ -45,8 +51,9 @@ class Ranking extends Component {
 }
 
 Ranking.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
-export default Ranking;
+export default connect()(Ranking);
