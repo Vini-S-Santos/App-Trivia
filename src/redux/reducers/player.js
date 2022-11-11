@@ -19,7 +19,7 @@ const player = (state = INITIAL_STATE, { type, payload }) => {
   case ADD_POINT_TO_SCORE:
     return { ...state,
       score: state.score + payload.pointsToAdd,
-      assertions: state.assertions + payload.pointsToAdd };
+      assertions: state.assertions + 1 };
   default:
     return { ...state };
   }
