@@ -1,1 +1,6 @@
-export const LOGIN_PATH = ['/', '/login'];
+const LOGIN_PATH = [
+  '/',
+  '/login',
+];
+
+export default LOGIN_PATH;

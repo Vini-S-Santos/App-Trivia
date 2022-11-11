@@ -8,11 +8,12 @@ function GridWrapper({
   justifyContent,
   children,
   direction,
+  spacing,
 }) {
   return (
     <GWrapperStyled
       container={ container }
-      spacing={ 2 }
+      spacing={ spacing }
       alignContent={ alignContent }
       justifyContent={ justifyContent }
       direction={ direction }
@@ -28,6 +29,7 @@ GridWrapper.propTypes = {
   justifyContent: Proptypes.string,
   children: Proptypes.node.isRequired,
   direction: Proptypes.string,
+  spacing: Proptypes.number,
 };
 
 GridWrapper.defaultProps = {
@@ -35,6 +37,7 @@ GridWrapper.defaultProps = {
   alignContent: '',
   justifyContent: '',
   direction: 'column',
+  spacing: 2,
 };
 
 export default GridWrapper;

@@ -3,22 +3,19 @@ import { Button } from '@mui/material';
 
 const ButtonStyled = styled(Button)`
   color: #FFFFFF;
-  width: 100%;
-  padding: 9px;
-  margin: 0 0 22px;
+  width: 33%;    
   border-radius: 5px;
   border: 0;
-
   &:enabled {
-    background-color: #032b91;
+    background-color: #b3c500;
 
     &:hover {
-      background-color: rgba(35, 61, 218, 0.83) !important;
+      background-color: #cbe000 !important;
     }
   }
 
   &:disabled {
-    background-color: #92b6f5;
+    background-color: #989a51 !important;
   }
 `;
 

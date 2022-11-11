@@ -1,9 +1,25 @@
 import Proptypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getToken, getQuestions } from '../../services/fetches';
-import { SET_QUESTIONS, REGISTER_EMAIL, REGISTER_USER } from '../../redux/actions';
+import { Grid, Divider } from '@mui/material';
+
+// Internal Components
 import Button from '../../components/Button/Button';
+import GridWrapper from '../../components/GridWrapper/GridWrapper';
+import TFieldStyled from '../../components/Inputs/TextField/TField.styled';
+
+// Actions/Dispatchers
+import {
+  SET_QUESTIONS,
+  REGISTER_EMAIL,
+  REGISTER_USER,
+} from '../../redux/actions';
+
+// Api services
+import {
+  getToken,
+  getQuestions,
+} from '../../services/fetches';
 
 class Login extends Component {
   constructor() {
@@ -65,41 +81,48 @@ class Login extends Component {
       isDisabled,
     } = this.state;
     return (
-      <div>
-        <h1> Login </h1>
-        <div>
-          <label htmlFor="input-user">
-            Usuário:
-            <input
+      <GridWrapper
+        container
+        spacing={ 3 }
+        alignContent="center"
+        justifyContent="center"
+        direction="column"
+      >
+        <img src="../../trivia.png" alt="logo trivia" style={{ width: '45%', height: '25%'}} />
+        <Grid item sx={{display:'flex'}} justifyContent="center">
+            <TFieldStyled
               type="text"
+              variant="standard"
               id="input-user"
               value={ nameInput }
               name="nameInput"
-              placeholder="Digite seu nome de usuário"
+              label="Usuário"
               data-testid="input-player-name"
               onChange={ this.handleChange }
             />
-          </label>
-          <label htmlFor="input-email">
-            Email:
-            <input
+        </Grid>
+        <Grid item xs={12} sx={{display:'flex'}} justifyContent="center">
+            <TFieldStyled
+              inputProps={{WebkitBoxShadow: "0 0 0 1000px white inset"}}
               type="email"
+              variant="standard"
               id="input-email"
               value={ emailInput }
               name="emailInput"
-              placeholder="Digite seu email"
+              label="Email"
               data-testid="input-gravatar-email"
               onChange={ this.handleChange }
             />
-          </label>
+        </Grid>
+        <Grid item xs={ 12 } sx={{display: 'inline-flex'}} justifyContent="center">
           <Button
             content="Play"
             onClick={ this.playButtonHandler }
             dataTestId="btn-play"
             disabled={ isDisabled }
+            sx={{ boxShadow: '100px -16px black'}}
           />
-        </div>
-        <div>
+          <Divider flexItem orientation="vertical" sx={ { mx: 3, my: 0.01 } } />
           <Button
             content="Settings"
             type="button"
@@ -107,8 +130,8 @@ class Login extends Component {
             onClick={ this.goToSettings }
             disabled={ false }
           />
-        </div>
-      </div>
+        </Grid>
+      </GridWrapper>
     );
   }
 }
