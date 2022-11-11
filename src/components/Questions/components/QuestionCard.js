@@ -24,19 +24,18 @@ class QuestionCard extends React.Component {
 
   async componentDidMount() {
     const { question } = this.props;
-    console.log('a');
     const answers = [...question.incorrect_answers, question.correct_answer];
-    const options = this.randomizeAnswers(answers);
+    const options = await this.randomizeAnswers(answers);
     this.setState({ options });
     const waitTime = 5000;
     setTimeout(() => this.questionListener(), waitTime);
   }
 
-  componentDidUpdate(prevProps /* prevState, snapshot */) {
+  async componentDidUpdate(prevProps /* prevState, snapshot */) {
     const { question } = this.props;
     if (question !== prevProps.question) {
       const answers = [...question.incorrect_answers, question.correct_answer];
-      const options = this.randomizeAnswers(answers);
+      const options = await this.randomizeAnswers(answers);
       this.setState({
         options,
         questionTimer: {
@@ -49,7 +48,7 @@ class QuestionCard extends React.Component {
     }
   }
 
-  randomizeAnswers = (answrs) => {
+  randomizeAnswers = async (answrs) => {
     const newAnswersArr = answrs;
     for (let i = answrs.length - 1; i > 0; i -= 1) {
       const randomIndex = Math.floor(Math.random() * (i + 1));
@@ -163,7 +162,7 @@ class QuestionCard extends React.Component {
         <h3 data-testid="question-category">{ question.category }</h3>
         <div data-testid="answer-options">
           {
-            options.map((option) => (
+            options && options.map((option) => (
               <button
                 className="options questao"
                 type="button"
