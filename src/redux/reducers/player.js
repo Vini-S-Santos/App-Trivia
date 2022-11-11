@@ -1,7 +1,5 @@
 import {
-  ACT_SET_QUESTIONS,
-  ACT_NEXT_QUESTION,
-  ADD_POINT_TO_SCORE,
+  ACT_NEXT_QUESTION, ACT_SET_QUESTIONS, ADD_POINT_TO_SCORE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -19,7 +17,9 @@ const player = (state = INITIAL_STATE, { type, payload }) => {
   case ACT_NEXT_QUESTION:
     return { ...state, page: payload, question: state.questions[payload] };
   case ADD_POINT_TO_SCORE:
-    return { ...state, score: state.score + 1, assertions: state.assertions + 1 };
+    return { ...state,
+      score: state.score + payload.pointsToAdd,
+      assertions: state.assertions + 1 };
   default:
     return { ...state };
   }

@@ -1,16 +1,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-// import { NEXT_QUESTION, ADD_POINT } from '../../../redux/actions';
 import { ADD_POINT } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
+
+const fixedPoints = 10;
+const hardMod = 3;
+const mediumMod = 2;
+const easyMod = 1;
 
 class QuestionCard extends React.Component {
   state = {
     API_ER_CODE: 3,
+    intervalId: 0,
+    isQuestionVisible: false,
+    optionsDisabled: false,
+    questionTimer: {
+      remainingTime: 30,
+      visible: false,
+    },
+    options: [],
   };
 
-  randomizeAnswers = (answrs) => {
+  async componentDidMount() {
+    const { question } = this.props;
+    const answers = [...question.incorrect_answers, question.correct_answer];
+    const options = await this.randomizeAnswers(answers);
+    this.setState({ options });
+    const waitTime = 5000;
+    setTimeout(() => this.questionListener(), waitTime);
+  }
+
+  async componentDidUpdate(prevProps /* prevState, snapshot */) {
+    const { question } = this.props;
+    if (question !== prevProps.question) {
+      const answers = [...question.incorrect_answers, question.correct_answer];
+      const options = await this.randomizeAnswers(answers);
+      this.setState({
+        options,
+        questionTimer: {
+          remainingTime: 30,
+          visible: true,
+        } }, () => {
+        this.enableOptions();
+        this.questionListener();
+      });
+    }
+  }
+
+  randomizeAnswers = async (answrs) => {
     const newAnswersArr = answrs;
     for (let i = answrs.length - 1; i > 0; i -= 1) {
       const randomIndex = Math.floor(Math.random() * (i + 1));
@@ -23,20 +61,34 @@ class QuestionCard extends React.Component {
   };
 
   checkAnswer = ({ target: { id } }) => {
-    // const { question, dispatch, questions, page } = this.props;
+    const { intervalId, questionTimer: { remainingTime } } = this.state;
+    clearInterval(intervalId);
+    this.disableOptions();
+    this.addStyle();
     const { question, dispatch } = this.props;
     if (id === question.correct_answer) {
       console.log('YAY =^.^= KAWAII!!');
-      // add css class to btn
-      dispatch(ADD_POINT());
+      const diffMod = this.getDiffMod(question.difficulty);
+      const points = this.calcPoints(diffMod, remainingTime);
+      dispatch(ADD_POINT(points));
     } else {
-      console.log(' TT_TT MOSHI MOSHI DESU NE');
-      // if hard mode score--?
+      console.log('TT_TT MOSHI MOSHI DESU NE');
     }
-    // const questionPointer = (page < questions.length - 1 ? page + 1 : 0);
-    // dispatch(NEXT_QUESTION(questionPointer));
-    // dispatch(NEXT_QUESTION((page < questionsLength - 1 ? page + 1 : 0))
-    this.addStyle();
+  };
+
+  calcPoints = (diffMod, remainingTime) => (fixedPoints + (remainingTime * diffMod));
+
+  getDiffMod = (diff) => {
+    switch (diff) {
+    case 'easy':
+      return easyMod;
+    case 'medium':
+      return mediumMod;
+    case 'hard':
+      return hardMod;
+    default:
+      return 0;
+    }
   };
 
   addStyle = () => {
@@ -63,34 +115,72 @@ class QuestionCard extends React.Component {
     }
   };
 
+  enableOptions = async () => {
+    this.setState({ optionsDisabled: false });
+  };
+
+  disableOptions = async () => {
+    this.setState({ optionsDisabled: true });
+  };
+
+  secPasser = async () => {
+    const { intervalId, questionTimer: { remainingTime, visible } } = this.state;
+    if (remainingTime === 0) {
+      clearInterval(intervalId);
+      return;
+    }
+    this.setState(({ questionTimer }) => ({
+      questionTimer: { remainingTime: questionTimer.remainingTime - 1, visible,
+      } }));
+  };
+
+  questionListener = async () => {
+    this.setState({ isQuestionVisible: true });
+    const answerTime = 30000;
+    const sec = 1000;
+    const visible = true;
+    this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible } }));
+    const intervalId = setInterval(() => this.secPasser(), sec);
+    this.setState({ intervalId });
+    setTimeout(() => this.disableOptions(), answerTime);
+  };
+
   render() {
     const { question } = this.props;
-    const answers = [...question.incorrect_answers, question.correct_answer];
-    const options = this.randomizeAnswers(answers);
+    const {
+      isQuestionVisible,
+      options,
+      optionsDisabled,
+      questionTimer: {
+        remainingTime,
+        visible,
+      } } = this.state;
     this.verifyToken();
     return (
-      <>
+      <div style={ { display: (isQuestionVisible ? 'block' : 'none') } }>
         <h1 data-testid="question-text">{ question.question }</h1>
         <h3 data-testid="question-category">{ question.category }</h3>
         <div data-testid="answer-options">
           {
-            options.map((option) => (
+            options && options.map((option) => (
               <button
+                className="options questao"
                 type="button"
                 onClick={ this.checkAnswer }
                 key={ option }
                 id={ option }
-                className="questao"
                 data-testid={ option === question.correct_answer
                   ? 'correct-answer'
                   : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
+                disabled={ optionsDisabled }
               >
                 {option}
               </button>
             ))
           }
+          <span style={ { display: (visible ? 'block' : 'none') } }>{remainingTime}</span>
         </div>
-      </>
+      </div>
     );
   }
 }
@@ -104,16 +194,7 @@ QuestionCard.propTypes = {
     correct_answer: Proptypes.string,
     incorrect_answers: Proptypes.arrayOf(Proptypes.string),
   }).isRequired,
-  // questions: Proptypes.arrayOf(Proptypes.shape({
-  //  category: Proptypes.string,
-  //  type: Proptypes.string,
-  //  difficulty: Proptypes.string,
-  //  question: Proptypes.string,
-  //  correct_answer: Proptypes.string,
-  //  incorrect_answers: Proptypes.arrayOf(Proptypes.string),
-  // })).isRequired,
   dispatch: Proptypes.func.isRequired,
-  // spage: Proptypes.number.isRequired,
   history: Proptypes.shape({
     push: Proptypes.func,
   }),

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import user from './userAndEmail';
 import player from './player';
+import user from './userAndEmail';
 
 const rootReducer = combineReducers({ user, player });
 
