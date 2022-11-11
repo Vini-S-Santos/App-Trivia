@@ -19,14 +19,19 @@ class Questions extends React.Component {
     const { questions, page, score, nextBtnEnabled } = this.props;
     return (
       <div>
-        <button
-          type="button"
-          data-testid="btn-next"
-          onClick={ this.handleNextQuestion }
-          style={ { display: (nextBtnEnabled ? 'block' : 'none') } }
-        >
-          next
-        </button>
+        {
+          nextBtnEnabled
+            ? (
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.handleNextQuestion }
+              >
+                next
+              </button>)
+            : null
+        }
+
         <QuestionCard question={ questions[page] } />
         <h1>{ `PLACAR: ${score}` }</h1>
       </div>
