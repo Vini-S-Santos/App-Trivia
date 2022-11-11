@@ -65,7 +65,7 @@ class Feedback extends React.Component {
 const mapStateToProps = (state) => ({
   assertNumber: state.player.assertions,
   playerScore: state.player.score,
-  playerName: state.user.name,
+  playerName: state.user.user,
   playerEmail: state.user.email,
 });
 

@@ -1,3 +1,4 @@
+import { MD5 } from 'crypto-js';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 // import { MD5 } from 'crypto-js';
@@ -16,10 +17,18 @@ class Ranking extends Component {
             <div
               key={ index }
             >
-              <span>
+              <img
+                src={ `https://www.gravatar.com/avatar/${MD5(obj.playerEmail).toString()}` }
+                alt="Gravatar do usuario"
+              />
+              <span
+                data-testid={ `player-name-${index}` }
+              >
                 { obj.playerEmail}
               </span>
-              <span>
+              <span
+                data-testid={ `player-score-${index}` }
+              >
                 { obj.playerScore}
               </span>
             </div>))}
