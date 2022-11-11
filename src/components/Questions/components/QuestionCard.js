@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { ADD_POINT } from '../../../redux/actions';
+import {ACT_ENABLE_NEXT_BTN, ADD_POINT, DISABLE_NEXT_BTN, ENABLE_NEXT_BTN} from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
 
 const fixedPoints = 10;
@@ -62,6 +62,7 @@ class QuestionCard extends React.Component {
 
   checkAnswer = ({ target: { id } }) => {
     const { intervalId, questionTimer: { remainingTime } } = this.state;
+    this.enableNextBtn();
     clearInterval(intervalId);
     this.disableOptions();
     this.addStyle();
@@ -115,6 +116,15 @@ class QuestionCard extends React.Component {
     }
   };
 
+  enableNextBtn = () => {
+    const { dispatch } = this.props;
+    dispatch(ENABLE_NEXT_BTN());
+  }
+
+  disableNextBtn = () => {
+    dispatch(DISABLE_NEXT_BTN());
+  }
+
   enableOptions = async () => {
     this.setState({ optionsDisabled: false });
   };
@@ -142,7 +152,10 @@ class QuestionCard extends React.Component {
     this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible } }));
     const intervalId = setInterval(() => this.secPasser(), sec);
     this.setState({ intervalId });
-    setTimeout(() => this.disableOptions(), answerTime);
+    setTimeout(() => {
+      this.disableOptions();
+      this.disableNextBtn();
+    }, answerTime);
   };
 
   render() {

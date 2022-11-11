@@ -4,7 +4,7 @@ import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import QuestionCard from './components/QuestionCard';
-import { NEXT_QUESTION } from '../../redux/actions';
+import {DISABLE_NEXT_BTN, NEXT_QUESTION} from '../../redux/actions';
 
 class Questions extends React.Component {
   handleNextQuestion = () => {
@@ -12,20 +12,20 @@ class Questions extends React.Component {
     const questionPointer = (page < questions.length - 1 ? page + 1
       : history.push('/feedback'));
     dispatch(NEXT_QUESTION(questionPointer));
-    // dispatch(NEXT_QUESTION((page < questionsLength - 1 ? page + 1 : 0))
+    dispatch(DISABLE_NEXT_BTN());
   };
 
   render() {
-    const { questions, page, score } = this.props;
+    const { questions, page, score, nextBtnEnabled } = this.props;
     return (
       <div>
         <button
           type="button"
           data-testid="btn-next"
           onClick={ this.handleNextQuestion }
+          style={ { display: (nextBtnEnabled ? 'block' : 'none') } }
         >
           next
-
         </button>
         <QuestionCard question={ questions[page] } />
         <h1>{ `PLACAR: ${score}` }</h1>
@@ -35,6 +35,7 @@ class Questions extends React.Component {
 }
 
 Questions.propTypes = {
+  nextBtnEnabled: Proptypes.bool.isRequired,
   dispatch: Proptypes.func,
   history: Proptypes.shape({
     push: Proptypes.func,
@@ -47,10 +48,11 @@ Questions.propTypes = {
   score: Proptypes.any,
 }.isRequired;
 
-const mapStateToProps = ({ player: { questions, page, score } }) => ({
+const mapStateToProps = ({ player: { questions, page, score, nextBtnEnabled } }) => ({
   questions,
   page,
   score,
+  nextBtnEnabled,
 });
 
 export default compose(withRouter, connect(mapStateToProps))(Questions);
