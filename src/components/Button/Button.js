@@ -4,7 +4,7 @@ import ButtonStyled from './Button.styled';
 
 class Button extends React.Component {
   render() {
-    const { content, onClick, dataTestId, disabled, className, id, name } = this.props;
+    const { children, onClick, dataTestId, disabled, className, id, name } = this.props;
     return (
       <ButtonStyled
         id={ id }
@@ -16,14 +16,13 @@ class Button extends React.Component {
         name={ name }
         variant="contained"
       >
-        { content }
+        { children }
       </ButtonStyled>
     );
   }
 }
 
 Button.propTypes = {
-  content: Proptypes.string.isRequired,
   onClick: Proptypes.func,
   dataTestId: Proptypes.string,
   disabled: Proptypes.bool,

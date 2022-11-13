@@ -1,7 +1,7 @@
 import Proptypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Divider } from '@mui/material';
+import {Grid, Divider, Typography} from '@mui/material';
 
 // Internal Components
 import Button from '../../components/Button/Button';
@@ -88,8 +88,10 @@ class Login extends Component {
         justifyContent="center"
         direction="column"
       >
-        <img src="../../trivia.png" alt="logo trivia" style={{ width: '45%', height: '25%'}} />
-        <Grid item sx={{display:'flex'}} justifyContent="center">
+        <Grid item xs={ 2 } sx={ { display: 'flex'} } justifyContent="center">
+          <img src="../../trivia.png" alt="logo trivia" style={ { width: '50%', height: '50%'} } />
+        </Grid>
+        <Grid item xs={ 2 } sx={ { display:'flex' } } justifyContent="center">
             <TFieldStyled
               type="text"
               variant="standard"
@@ -101,9 +103,9 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
         </Grid>
-        <Grid item xs={12} sx={{display:'flex'}} justifyContent="center">
+        <Grid item xs={ 2 } sx={ { display:'flex' } } justifyContent="center">
             <TFieldStyled
-              inputProps={{WebkitBoxShadow: "0 0 0 1000px white inset"}}
+              inputProps={ { WebkitBoxShadow: "0 0 0 1000px white inset"} }
               type="email"
               variant="standard"
               id="input-email"
@@ -114,22 +116,25 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
         </Grid>
-        <Grid item xs={ 12 } sx={{display: 'inline-flex'}} justifyContent="center">
+        <Grid item xs={ 2 } sx={{display: 'inline-flex', marginTop: '25px' } } justifyContent="center">
           <Button
             content="Play"
             onClick={ this.playButtonHandler }
             dataTestId="btn-play"
             disabled={ isDisabled }
-            sx={{ boxShadow: '100px -16px black'}}
-          />
+            sx={ { boxShadow: '100px -16px black' } }
+          >
+            <Typography sx={ { fontSize: 12 } }>Play</Typography>
+          </Button>
           <Divider flexItem orientation="vertical" sx={ { mx: 3, my: 0.01 } } />
           <Button
-            content="Settings"
             type="button"
             data-testid="btn-settings"
             onClick={ this.goToSettings }
             disabled={ false }
-          />
+          >
+            <Typography sx={ { fontSize: 12 } }>Settings</Typography>
+          </Button>
         </Grid>
       </GridWrapper>
     );
