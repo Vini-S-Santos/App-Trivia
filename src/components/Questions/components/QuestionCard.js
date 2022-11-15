@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { Typography, Grid, Divider } from '@mui/material';
 import { ADD_POINT, ENABLE_NEXT_BTN } from '../../../redux/actions';
-import { getQuestions } from '../../../services/fetches';
 
 import Button from '../../Button/Button';
 
@@ -14,7 +13,6 @@ const easyMod = 1;
 
 class QuestionCard extends React.Component {
   state = {
-    API_ER_CODE: 3,
     intervalId: 0,
     timeoutId: 0,
     isQuestionVisible: false,
@@ -31,7 +29,6 @@ class QuestionCard extends React.Component {
     const answers = [...question.incorrect_answers, question.correct_answer];
     const options = await this.randomizeAnswers(answers);
     this.setState({ options });
-
     this.questionListener();
   }
 
@@ -51,7 +48,7 @@ class QuestionCard extends React.Component {
         this.questionListener();
       });
     } else {
-      if(remainingTime === 0) {
+      if (remainingTime === 0) {
         this.addStyle();
       }
     }
@@ -112,17 +109,6 @@ class QuestionCard extends React.Component {
         element.classList.add('errada');
       }
     });
-  };
-
-  verifyToken = async () => {
-    const token = localStorage.getItem('token');
-    const { API_ER_CODE } = this.state;
-    const res = await getQuestions(token);
-    if (res.response_code === API_ER_CODE) {
-      localStorage.removeItem('token');
-      const { history } = this.props;
-      history.push('/');
-    }
   };
 
   enableNextBtn = () => {
@@ -192,23 +178,39 @@ class QuestionCard extends React.Component {
         style={ {
           display: (isQuestionVisible ? 'flex' : 'none'),
           paddingLeft: '70px',
-          marginTop: '5px',
-        } }
+          marginTop: '10px' } }
       >
         <Grid item>
-          <Grid container item spacing={ 2 } xs={ 11 } sx={ { paddingLeft: 2}}>
-            <Grid className="question-header" container xs={ 12 } item justifyContent="space-between" >
-              <Typography data-testid="question-category">{ atob(question.category) }</Typography>
+          <Grid container item spacing={ 2 } xs={ 11 } sx={ { paddingLeft: 2 } }>
+            <Grid container xs={ 12 } item justifyContent="space-between">
+              <Typography
+                data-testid="question-category"
+              >
+                { atob(question.category) }
+              </Typography>
               <Typography>{ atob(question.difficulty) }</Typography>
-              <Typography>{ `${ page + 1 }/5` }</Typography>
+              <Typography>{ `${page + 1}/5` }</Typography>
             </Grid>
             <Grid item>
-              <Typography className="question-text" sx={ { fontWeight: 'bold' } } data-testid="question-text">{ atob(question.question) }</Typography>
+              <Typography
+                className="question-text"
+                sx={ { fontWeight: 'bold' } }
+                data-testid="question-text"
+              >
+                { atob(question.question) }
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={ 12 }>
-          <Grid container justifyContent="center" flexDirection={ options.length === 2 ? 'row' : 'column'} xs={ 12 } data-testid="answer-options" spacing={ 2 }>
+          <Grid
+            container
+            justifyContent="center"
+            flexDirection={ options.length === 2 ? 'row' : 'column' }
+            xs={ 12 }
+            data-testid="answer-options"
+            spacing={ 2 }
+          >
             <Grid container spacing={ 2 }>
               {
                 options && options.map((option) => (
@@ -222,7 +224,7 @@ class QuestionCard extends React.Component {
                         ? 'correct-answer'
                         : `wrong-answer-${(question.incorrect_answers.indexOf(option))}` }
                       disabled={ optionsDisabled }
-                      sx={ { boxShadow: 3 } }
+                      sx={ { boxShadow: '100px -16px black' } }
                     >
                       <Typography
                         key={ option }
@@ -233,14 +235,24 @@ class QuestionCard extends React.Component {
                       >
                         {atob(option)}
                       </Typography>
-                      <Divider flexItem color="yellow" orientation="horizontal" sx={ { mx: 3, my: 3 } } />
+                      <Divider
+                        flexItem
+                        color="yellow"
+                        orientation="horizontal"
+                        sx={ { mx: 3, my: 3 } }
+                      />
                     </Button>
                   </Grid>
                 ))
               }
             </Grid>
             <Grid item xs={ 12 }>
-              <Typography className="remaining-time" sx={ { display: (visible ? 'block' : 'none') } }>{`${remainingTime} sec`}</Typography>
+              <Typography
+                className="remaining-time"
+                sx={ { display: (visible ? 'block' : 'none') } }
+              >
+                { `${remainingTime} sec` }
+              </Typography>
             </Grid>
           </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import {Grid, Paper, Typography} from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import Header from '../components/Header/Header';
 import { RESET_STATE } from '../redux/actions';
 import LOGIN_PATH from './login/login.type';
@@ -16,7 +16,7 @@ class Feedback extends React.Component {
     const { dispatch, history } = this.props;
     dispatch(RESET_STATE());
     history.push(LOGIN_PATH[0]);
-  }
+  };
 
   setRanking = () => {
     const { playerScore, playerName, playerEmail } = this.props;
@@ -72,7 +72,7 @@ class Feedback extends React.Component {
               <Grid
                 container
                 xs={ 12 }
-                spacing={ 5 }
+                spacing={ 4 }
                 flexDirection="row"
                 alignItems="center"
               >
@@ -85,16 +85,29 @@ class Feedback extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography data-testid="feedback-total-question" sx={ { fontWeight: 'bold'} }>
+                  <Typography
+                    data-testid="feedback-total-question"
+                    sx={ { fontWeight: 'bold' } }
+                  >
                     { `Hits: ${assertNumber}` }
                   </Typography>
-                  <Typography data-testid="feedback-total-score" sx={ { fontWeight: 'bold'} }>
+                  <Typography
+                    data-testid="feedback-total-score"
+                    sx={ { fontWeight: 'bold' } }
+                  >
                     { `Score: ${playerScore}` }
                   </Typography>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container item xs={ 3 } spacing={ 2 } rowGap={ 2 } sx={ { marginTop: 10 } }>
+            <Grid
+              container
+              item
+              xs={ 3 }
+              spacing={ 2 }
+              rowGap={ 2 }
+              sx={ { marginTop: 12 } }
+            >
               <Button
                 type="button"
                 className="btns-flex-end"

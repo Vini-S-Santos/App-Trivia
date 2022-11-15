@@ -130,8 +130,7 @@ class Login extends Component {
           } }
         >
           <Button
-            customWidth={ '5%' }
-            content="Play"
+            customWidth="5%"
             onClick={ this.playButtonHandler }
             dataTestId="btn-play"
             disabled={ isDisabled }
@@ -139,9 +138,14 @@ class Login extends Component {
           >
             <Typography sx={ { fontSize: 12 } }>Play</Typography>
           </Button>
-          <Divider flexItem color="yellow" orientation="vertical" sx={ { mx: 3, my: 0.01 } } />
+          <Divider
+            flexItem
+            color="yellow"
+            orientation="vertical"
+            sx={ { mx: 3, my: 0.01 } }
+          />
           <Button
-            customWidth={ '10%' }
+            customWidth="10%"
             type="button"
             data-testid="btn-settings"
             onClick={ this.goToSettings }

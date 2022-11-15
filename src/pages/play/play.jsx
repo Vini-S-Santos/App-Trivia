@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
-import { Grid, Paper } from '@mui/material';
+import { Grid, Paper, LinearProgress } from '@mui/material';
 import Questions from '../../components/Questions/Questions';
 import { getQuestions } from '../../services/fetches';
 import Header from '../../components/Header/Header';
@@ -21,12 +21,13 @@ class Play extends Component {
       history.push('/');
     } else {
       const waitTime = 5000;
-      setTimeout(()=>this.setState({ showQuestions: true }), waitTime);
+      // const sec = 1000;
+      // const intervalId = setInterval(() => this.secPasser(), sec);
+      setTimeout(() => this.setState({ showQuestions: true }), waitTime);
     }
   }
 
   render() {
-    const { history } = this.props;
     const { showQuestions } = this.state;
     return (
       <Grid
@@ -36,32 +37,31 @@ class Play extends Component {
         justifyContent="center"
       >
         <Header />
-        {
-          showQuestions
-            ? (<Grid
-              item
-              className="play-questions-container"
-              component={ Paper }
-              alignContent="center"
-              justifyContent="center"
-              sx={ {
-                maxWidth: 700,
-                minWidth: 500,
-                minHeight: 500,
-                maxHeight: 700,
-                marginTop: '8%',
-                backgroundColor: 'rgba(81,154,82,0.73)',
-                marginLeft: 5,
-                marginRight: 5,
-                boxShadow: 3,
-                paddingBottom: 5,
-              } }
-            >
-              <Questions { ...this.props } />
-            </Grid>)
-            : null
-        }
-
+        <Grid
+          item
+          className="play-questions-container"
+          component={ Paper }
+          alignContent="center"
+          justifyContent="center"
+          sx={ {
+            maxWidth: 700,
+            minWidth: 500,
+            minHeight: 500,
+            maxHeight: 700,
+            marginTop: '8%',
+            backgroundColor: 'rgba(81,154,82,0.73)',
+            marginLeft: 5,
+            marginRight: 5,
+            boxShadow: 3,
+            paddingBottom: 5,
+          } }
+        >
+          {
+            showQuestions
+              ? (<Questions { ...this.props } />)
+              : (<LinearProgress color="success" />)
+          }
+        </Grid>
       </Grid>
     );
   }

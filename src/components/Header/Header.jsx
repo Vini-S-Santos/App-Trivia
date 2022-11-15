@@ -27,7 +27,7 @@ class Header extends Component {
             <img
               data-testid="header-profile-picture"
               src="../../trivia.png"
-              alt="Gravatar do usuario"
+              alt="Trivia logo"
               style={ { width: '23%', height: '70%' } }
             />
           </Grid>
@@ -43,9 +43,19 @@ class Header extends Component {
                 alt="Gravatar do usuario"
               />
               <Typography data-testid="header-currency-field">{ user }</Typography>
-              <Divider flexItem color="yellow" orientation="vertical" sx={ { mx: 3, my: 0.01 } } />
+              <Divider
+                flexItem
+                color="yellow"
+                orientation="vertical"
+                sx={ { mx: 3, my: 0.01 } }
+              />
               <Typography data-testid="total-field">{ email }</Typography>
-              <Divider flexItem color="yellow" orientation="vertical" sx={ { mx: 3, my: 0.01 } } />
+              <Divider
+                flexItem
+                color="yellow"
+                orientation="vertical"
+                sx={ { mx: 3, my: 0.01 } }
+              />
               <Typography data-testid="email-field">{ `Score: ${score}`}</Typography>
             </Box>
           </Toolbar>

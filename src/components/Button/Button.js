@@ -4,7 +4,16 @@ import ButtonStyled from './Button.styled';
 
 class Button extends React.Component {
   render() {
-    const { children, onClick, dataTestId, disabled, className, id, name, customWidth } = this.props;
+    const {
+      children,
+      onClick,
+      dataTestId,
+      disabled,
+      className,
+      id,
+      name,
+      customWidth,
+    } = this.props;
     return (
       <ButtonStyled
         customWidth={ customWidth }
@@ -24,7 +33,8 @@ class Button extends React.Component {
 }
 
 Button.propTypes = {
-  customWidith: Proptypes.string,
+  children: Proptypes.node.isRequired,
+  customWidth: Proptypes.string,
   disabled: Proptypes.bool,
   dataTestId: Proptypes.string,
   id: Proptypes.string,

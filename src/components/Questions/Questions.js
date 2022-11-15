@@ -7,14 +7,8 @@ import { DISABLE_NEXT_BTN, NEXT_QUESTION } from '../../redux/actions';
 import Button from '../Button/Button';
 
 class Questions extends React.Component {
-
-  state = {
-    showQuestions: false,
-  }
-
   handleNextQuestion = () => {
     const { dispatch, questions, page, history } = this.props;
-    console.log(page);
     const questionPointer = (page < questions.length - 1 ? page + 1
       : history.push('/feedback'));
     dispatch(NEXT_QUESTION(questionPointer));
@@ -22,7 +16,7 @@ class Questions extends React.Component {
   };
 
   render() {
-    const { questions, page, score, nextBtnEnabled } = this.props;
+    const { questions, page, nextBtnEnabled } = this.props;
     return (
       <Grid
         container
@@ -38,7 +32,7 @@ class Questions extends React.Component {
             nextBtnEnabled
               ? (
                 <Button
-                  className="btn-next"
+                  className="btns-flex-end"
                   type="button"
                   data-testid="btn-next"
                   onClick={ this.handleNextQuestion }
