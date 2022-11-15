@@ -1,7 +1,7 @@
 import Proptypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Grid, Divider, Typography} from '@mui/material';
+import { Grid, Divider, Typography } from '@mui/material';
 
 // Internal Components
 import Button from '../../components/Button/Button';
@@ -88,36 +88,49 @@ class Login extends Component {
         justifyContent="center"
         direction="column"
       >
-        <Grid item xs={ 2 } sx={ { display: 'flex'} } justifyContent="center">
-          <img src="../../trivia.png" alt="logo trivia" style={ { width: '50%', height: '50%'} } />
+        <Grid item xs={ 2 } sx={ { display: 'flex' } } justifyContent="center">
+          <img
+            src="../../trivia.png"
+            alt="logo trivia"
+            style={ { width: '50%', height: '50%' } }
+          />
         </Grid>
-        <Grid item xs={ 2 } sx={ { display:'flex' } } justifyContent="center">
-            <TFieldStyled
-              type="text"
-              variant="standard"
-              id="input-user"
-              value={ nameInput }
-              name="nameInput"
-              label="Usuário"
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-            />
+        <Grid item xs={ 2 } sx={ { display: 'flex' } } justifyContent="center">
+          <TFieldStyled
+            type="text"
+            variant="standard"
+            id="input-user"
+            value={ nameInput }
+            name="nameInput"
+            label="Usuário"
+            data-testid="input-player-name"
+            onChange={ this.handleChange }
+          />
         </Grid>
-        <Grid item xs={ 2 } sx={ { display:'flex' } } justifyContent="center">
-            <TFieldStyled
-              inputProps={ { WebkitBoxShadow: "0 0 0 1000px white inset"} }
-              type="email"
-              variant="standard"
-              id="input-email"
-              value={ emailInput }
-              name="emailInput"
-              label="Email"
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-            />
+        <Grid item xs={ 2 } sx={ { display: 'flex' } } justifyContent="center">
+          <TFieldStyled
+            inputProps={ { WebkitBoxShadow: '0 0 0 1000px white inset' } }
+            type="email"
+            variant="standard"
+            id="input-email"
+            value={ emailInput }
+            name="emailInput"
+            label="Email"
+            data-testid="input-gravatar-email"
+            onChange={ this.handleChange }
+          />
         </Grid>
-        <Grid item xs={ 2 } sx={{display: 'inline-flex', marginTop: '25px' } } justifyContent="center">
+        <Grid
+          item
+          xs={ 2 }
+          justifyContent="center"
+          sx={ {
+            display: 'inline-flex',
+            marginTop: '25px',
+          } }
+        >
           <Button
+            customWidth={ '5%' }
             content="Play"
             onClick={ this.playButtonHandler }
             dataTestId="btn-play"
@@ -126,8 +139,9 @@ class Login extends Component {
           >
             <Typography sx={ { fontSize: 12 } }>Play</Typography>
           </Button>
-          <Divider flexItem orientation="vertical" sx={ { mx: 3, my: 0.01 } } />
+          <Divider flexItem color="yellow" orientation="vertical" sx={ { mx: 3, my: 0.01 } } />
           <Button
+            customWidth={ '10%' }
             type="button"
             data-testid="btn-settings"
             onClick={ this.goToSettings }

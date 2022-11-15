@@ -4,10 +4,8 @@ import { Button } from '@mui/material';
 const ButtonStyled = styled(Button)`
   color: #FFFFFF;
   font-size: 15px;
-  width: 15%;
-  height: 5vh;
-  border-radius: 5px;
-  border: 0;
+  width: ${ (props) => props.customWidth };
+  height: 6vh;  
   //font-size: 10em;
   &:enabled {
     background-color: #b3c500;

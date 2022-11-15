@@ -4,9 +4,10 @@ import ButtonStyled from './Button.styled';
 
 class Button extends React.Component {
   render() {
-    const { children, onClick, dataTestId, disabled, className, id, name } = this.props;
+    const { children, onClick, dataTestId, disabled, className, id, name, customWidth } = this.props;
     return (
       <ButtonStyled
+        customWidth={ customWidth }
         id={ id }
         type="button"
         className={ className }
@@ -23,15 +24,17 @@ class Button extends React.Component {
 }
 
 Button.propTypes = {
-  onClick: Proptypes.func,
-  dataTestId: Proptypes.string,
+  customWidith: Proptypes.string,
   disabled: Proptypes.bool,
-  className: Proptypes.string,
+  dataTestId: Proptypes.string,
   id: Proptypes.string,
+  className: Proptypes.string,
+  onClick: Proptypes.func,
   name: Proptypes.string,
 };
 
 Button.defaultProps = {
+  customWidth: '100%',
   disabled: true,
   dataTestId: '',
   id: undefined,

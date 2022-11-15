@@ -1,11 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
+import {Grid, Paper, Typography} from '@mui/material';
+import Header from '../components/Header/Header';
+import { RESET_STATE } from '../redux/actions';
+import LOGIN_PATH from './login/login.type';
+import Button from '../components/Button/Button';
 
 class Feedback extends React.Component {
   componentDidMount() {
     this.setRanking();
+  }
+
+  resetState = () => {
+    const { dispatch, history } = this.props;
+    dispatch(RESET_STATE());
+    history.push(LOGIN_PATH[0]);
   }
 
   setRanking = () => {
@@ -27,37 +37,86 @@ class Feedback extends React.Component {
     const { assertNumber, playerScore, history } = this.props;
     const ASSERT_FLOOR = 3;
     return (
-      <div>
+      <Grid
+        container
+        xs={ 12 }
+        spacing={ 3 }
+        justifyContent="center"
+        alignContent="center"
+      >
         <Header />
-        <h2>Results</h2>
-        <p data-testid="feedback-text">
-          { assertNumber < ASSERT_FLOOR ? 'Could be better...' : 'Well Done!' }
-        </p>
-        <p>
-          {'Hits: '}
-        </p>
-        <p data-testid="feedback-total-question">{ assertNumber }</p>
-        <p>
-          {'Score: '}
-        </p>
-        <p data-testid="feedback-total-score">{ playerScore }</p>
-        <button
-          type="button"
-          className="feedback-btn"
-          data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
+        <Grid
+          item
+          className="results-container"
+          component={ Paper }
+          alignContent="center"
+          justifyContent="center"
+          sx={ {
+            width: 500,
+            height: 250,
+            marginTop: '17%',
+            backgroundColor: 'rgba(81,154,82,0.73)',
+            marginLeft: 5,
+            marginRight: 5,
+            boxShadow: 3,
+            paddingBottom: 5,
+          } }
         >
-          Play Again
-        </button>
-        <button
-          type="button"
-          className="feedback-btn"
-          data-testid="btn-ranking"
-          onClick={ () => history.push('/ranking') }
-        >
-          Ranking
-        </button>
-      </div>
+          <Grid
+            container
+            spacing={ 3 }
+            justifyContent="flex-end"
+            alignContent="center"
+          >
+            <Grid item>
+              <Grid
+                container
+                xs={ 12 }
+                spacing={ 5 }
+                flexDirection="row"
+                alignItems="center"
+              >
+                <Grid item xs={ 12 }>
+                  <Typography sx={ { fontWeight: 'bold' } }>Results</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography data-testid="feedback-text">
+                    { assertNumber < ASSERT_FLOOR ? 'Could be better...' : 'Well Done!' }
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography data-testid="feedback-total-question" sx={ { fontWeight: 'bold'} }>
+                    { `Hits: ${assertNumber}` }
+                  </Typography>
+                  <Typography data-testid="feedback-total-score" sx={ { fontWeight: 'bold'} }>
+                    { `Score: ${playerScore}` }
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container item xs={ 3 } spacing={ 2 } rowGap={ 2 } sx={ { marginTop: 10 } }>
+              <Button
+                type="button"
+                className="btns-flex-end"
+                data-testid="btn-ranking"
+                onClick={ () => history.push('/ranking') }
+                disabled={ false }
+              >
+                Ranking
+              </Button>
+              <Button
+                type="button"
+                className="btns-flex-end"
+                data-testid="btn-play-again"
+                onClick={ this.resetState }
+                disabled={ false }
+              >
+                Play Again
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     );
   }
 } //
@@ -77,6 +136,7 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);

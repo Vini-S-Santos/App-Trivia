@@ -1,14 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
+import { Grid } from '@mui/material';
 import QuestionCard from './components/QuestionCard';
 import { DISABLE_NEXT_BTN, NEXT_QUESTION } from '../../redux/actions';
+import Button from '../Button/Button';
 
 class Questions extends React.Component {
+
+  state = {
+    showQuestions: false,
+  }
+
   handleNextQuestion = () => {
     const { dispatch, questions, page, history } = this.props;
+    console.log(page);
     const questionPointer = (page < questions.length - 1 ? page + 1
       : history.push('/feedback'));
     dispatch(NEXT_QUESTION(questionPointer));
@@ -18,23 +24,32 @@ class Questions extends React.Component {
   render() {
     const { questions, page, score, nextBtnEnabled } = this.props;
     return (
-      <div>
-        {
-          nextBtnEnabled
-            ? (
-              <button
-                type="button"
-                data-testid="btn-next"
-                onClick={ this.handleNextQuestion }
-              >
-                next
-              </button>)
-            : null
-        }
-
-        <QuestionCard question={ questions[page] } />
-        <h1>{ `PLACAR: ${score}` }</h1>
-      </div>
+      <Grid
+        container
+        spacing={ 3 }
+        justifyContent="flex-end"
+        alignContent="center"
+      >
+        <Grid item>
+          <QuestionCard question={ questions[page] } />
+        </Grid>
+        <Grid item xs={ 3 }>
+          {
+            nextBtnEnabled
+              ? (
+                <Button
+                  className="btn-next"
+                  type="button"
+                  data-testid="btn-next"
+                  onClick={ this.handleNextQuestion }
+                  disabled={ !nextBtnEnabled }
+                >
+                  next >>
+                </Button>)
+              : null
+          }
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -44,7 +59,7 @@ Questions.propTypes = {
   dispatch: Proptypes.func,
   history: Proptypes.shape({
     push: Proptypes.func,
-  }),
+  }).isRequired,
   page: Proptypes.shape({
   }),
   questions: Proptypes.shape({
@@ -60,4 +75,5 @@ const mapStateToProps = ({ player: { questions, page, score, nextBtnEnabled } })
   nextBtnEnabled,
 });
 
-export default compose(withRouter, connect(mapStateToProps))(Questions);
+export default connect(mapStateToProps)(Questions);
+// export default compose(withRouter, connect(mapStateToProps))(Questions);

@@ -1,3 +1,8 @@
+* {
+  font-family: 'IBM 3270' , Roboto , serif !important;
+  font-size: 1em !important;
+}
+
 body {
   background-color: rgb(24, 87, 0);
   box-sizing: border-box;
@@ -63,10 +68,34 @@ body {
   }
 }
 
-.certa {
+.btns-flex-end {
+  border-bottom-right-radius: 0 ! important;
+  border-top-right-radius: 0 ! important;
+}
+
+.question-header {
+  color: #002c01 ! important;
+}
+
+.question-text {
+  color: #002c01;
+  font-size: 20px ! important;
+  text-align: justify ! important;
+}
+.remaining-time {
+  font-size: 25px ! important;
+  color: #002c01 !important;
+}
+
+@font-face {
+  font-family: 'IBM 3270';
+  src: local('3270') , url('./fonts/3270SemiNarrow.ttf') format('truetype');
+}
+
+.certa:disabled {
   border: 3px solid rgb(6, 240, 15);
 }
 
-.errada {
+.errada:disabled {
   border: 3px solid red;
 }

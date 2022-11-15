@@ -6,7 +6,6 @@ export const getToken = async () => {
 };
 
 export const getQuestions = async (token) => {
-  const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
-  const res = await fetch(URL);
-  return res.json();
+  const URL = `https://opentdb.com/api.php?amount=5&encode=base64&token=${token}&difficulty=medium`;
+  return ((await fetch(URL)).json());
 };

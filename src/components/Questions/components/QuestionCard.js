@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
+import { Typography, Grid, Divider } from '@mui/material';
 import { ADD_POINT, ENABLE_NEXT_BTN } from '../../../redux/actions';
 import { getQuestions } from '../../../services/fetches';
+
+import Button from '../../Button/Button';
 
 const fixedPoints = 10;
 const hardMod = 3;
@@ -28,12 +31,13 @@ class QuestionCard extends React.Component {
     const answers = [...question.incorrect_answers, question.correct_answer];
     const options = await this.randomizeAnswers(answers);
     this.setState({ options });
-    const waitTime = 5000;
-    setTimeout(() => this.questionListener(), waitTime);
+
+    this.questionListener();
   }
 
   async componentDidUpdate(prevProps /* prevState, snapshot */) {
     const { question } = this.props;
+    const { questionTimer: { remainingTime } } = this.state;
     if (question !== prevProps.question) {
       const answers = [...question.incorrect_answers, question.correct_answer];
       const options = await this.randomizeAnswers(answers);
@@ -46,6 +50,10 @@ class QuestionCard extends React.Component {
         this.enableOptions();
         this.questionListener();
       });
+    } else {
+      if(remainingTime === 0) {
+        this.addStyle();
+      }
     }
   }
 
@@ -61,12 +69,12 @@ class QuestionCard extends React.Component {
     return newAnswersArr;
   };
 
-  checkAnswer = ({ target: { id } }) => {
+  checkAnswer = async ({ target: { id } }) => {
     const { timeoutId, intervalId, questionTimer: { remainingTime } } = this.state;
     this.enableNextBtn();
     clearInterval(intervalId);
     clearTimeout(timeoutId);
-    this.disableOptions();
+    await this.disableOptions();
     this.addStyle();
     const { question, dispatch } = this.props;
     if (id === question.correct_answer) {
@@ -82,7 +90,7 @@ class QuestionCard extends React.Component {
   calcPoints = (diffMod, remainingTime) => (fixedPoints + (remainingTime * diffMod));
 
   getDiffMod = (diff) => {
-    switch (diff) {
+    switch (atob(diff)) {
     case 'easy':
       return easyMod;
     case 'medium':
@@ -99,11 +107,10 @@ class QuestionCard extends React.Component {
     const { question } = this.props;
     respostas.forEach((element) => {
       if (element.id === question.correct_answer) {
-        element.className = 'certa';
+        element.classList.add('certa');
       } else {
-        element.className = 'errada';
+        element.classList.add('errada');
       }
-      console.log(element);
     });
   };
 
@@ -157,15 +164,15 @@ class QuestionCard extends React.Component {
     this.setState((prev) => ({ questionTimer: { ...prev.questionTimer, visible } }));
     const intervalId = setInterval(() => this.secPasser(), sec);
     this.setState({ intervalId });
-    const timeoutId = setTimeout(() => {
-      this.disableOptions();
+    const timeoutId = await setTimeout(async () => {
+      await this.disableOptions();
       this.enableNextBtn();
     }, answerTime);
     this.setState({ timeoutId });
   };
 
   render() {
-    const { question } = this.props;
+    const { question, page } = this.props;
     const {
       isQuestionVisible,
       options,
@@ -173,33 +180,71 @@ class QuestionCard extends React.Component {
       questionTimer: {
         remainingTime,
         visible,
-      } } = this.state;
-    this.verifyToken();
+      },
+    } = this.state;
     return (
-      <div style={ { display: (isQuestionVisible ? 'block' : 'none') } }>
-        <h1 data-testid="question-text">{ question.question }</h1>
-        <h3 data-testid="question-category">{ question.category }</h3>
-        <div data-testid="answer-options">
-          {
-            options && options.map((option) => (
-              <button
-                className="options questao"
-                type="button"
-                onClick={ this.checkAnswer }
-                key={ option }
-                id={ option }
-                data-testid={ option === question.correct_answer
-                  ? 'correct-answer'
-                  : `wrong-answer-${question.incorrect_answers.indexOf(option)}` }
-                disabled={ optionsDisabled }
-              >
-                {option}
-              </button>
-            ))
-          }
-          <span style={ { display: (visible ? 'block' : 'none') } }>{remainingTime}</span>
-        </div>
-      </div>
+      <Grid
+        container
+        xs={ 12 }
+        spacing={ 5 }
+        flexDirection="row"
+        alignItems="center"
+        style={ {
+          display: (isQuestionVisible ? 'flex' : 'none'),
+          paddingLeft: '70px',
+          marginTop: '5px',
+        } }
+      >
+        <Grid item>
+          <Grid container item spacing={ 2 } xs={ 11 } sx={ { paddingLeft: 2}}>
+            <Grid className="question-header" container xs={ 12 } item justifyContent="space-between" >
+              <Typography data-testid="question-category">{ atob(question.category) }</Typography>
+              <Typography>{ atob(question.difficulty) }</Typography>
+              <Typography>{ `${ page + 1 }/5` }</Typography>
+            </Grid>
+            <Grid item>
+              <Typography className="question-text" sx={ { fontWeight: 'bold' } } data-testid="question-text">{ atob(question.question) }</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={ 12 }>
+          <Grid container justifyContent="center" flexDirection={ options.length === 2 ? 'row' : 'column'} xs={ 12 } data-testid="answer-options" spacing={ 2 }>
+            <Grid container spacing={ 2 }>
+              {
+                options && options.map((option) => (
+                  <Grid key={ option } item xs={ 12 } className="box-answers">
+                    <Button
+                      className="questao"
+                      onClick={ this.checkAnswer }
+                      key={ option }
+                      id={ option }
+                      dataTestId={ option === question.correct_answer
+                        ? 'correct-answer'
+                        : `wrong-answer-${(question.incorrect_answers.indexOf(option))}` }
+                      disabled={ optionsDisabled }
+                      sx={ { boxShadow: 3 } }
+                    >
+                      <Typography
+                        key={ option }
+                        sx={ {
+                          fontSize: 12,
+                          color: '#024d05',
+                        } }
+                      >
+                        {atob(option)}
+                      </Typography>
+                      <Divider flexItem color="yellow" orientation="horizontal" sx={ { mx: 3, my: 3 } } />
+                    </Button>
+                  </Grid>
+                ))
+              }
+            </Grid>
+            <Grid item xs={ 12 }>
+              <Typography className="remaining-time" sx={ { display: (visible ? 'block' : 'none') } }>{`${remainingTime} sec`}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     );
   }
 }
