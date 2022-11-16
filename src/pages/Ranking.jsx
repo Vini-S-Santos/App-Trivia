@@ -62,7 +62,8 @@ class Ranking extends Component {
                 flexDirection="row"
                 alignItems="center"
               >
-                <Grid item xs={ 12 } sx={{ marginBottom: 5}}>
+                <Grid item xs={ 12 } sx={ { marginBottom: 5 } }>
+                  { /* eslint-disable-next-line */ }
                   <Typography
                     sx={ { fontWeight: 'bold' } }
                     data-testid="ranking-title"
@@ -70,6 +71,7 @@ class Ranking extends Component {
                     Ranking
                   </Typography>
                 </Grid>
+                { /* eslint-disable-next-line */ }
                 <Grid
                   container
                   flexDirection="column"
